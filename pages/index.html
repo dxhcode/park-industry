@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#070b12" />
+    <title>产业运营平台</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23070b12'/%3E%3Cpath d='M6 14.5 16 7l10 7.5V25H6Z' fill='none' stroke='%232dd4bf' stroke-width='1.6'/%3E%3Crect x='14' y='18' width='4' height='7' fill='%23e8c48a'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: #e8f4ff;
+        background:
+          radial-gradient(700px 320px at 12% -10%, rgba(45, 212, 191, 0.22), transparent 60%),
+          radial-gradient(640px 300px at 100% 0%, rgba(56, 189, 248, 0.16), transparent 55%),
+          #070b12;
+      }
+
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(94, 234, 212, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(94, 234, 212, 0.06) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse at center, #000 30%, transparent 80%);
+      }
+
+      main {
+        position: relative;
+        width: min(1040px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 72px 0 48px;
+      }
+
+      .kicker {
+        margin: 0 0 10px;
+        color: #8ec9c2;
+        letter-spacing: 0.24em;
+        font-size: 12px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(36px, 5vw, 56px);
+        letter-spacing: 0.06em;
+      }
+
+      .lead {
+        max-width: 640px;
+        margin: 14px 0 0;
+        color: #a9bccd;
+        line-height: 1.8;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 36px;
+      }
+
+      a.card {
+        display: block;
+        padding: 24px;
+        border: 1px solid rgba(125, 211, 252, 0.22);
+        border-radius: 18px;
+        color: inherit;
+        text-decoration: none;
+        background: rgba(10, 18, 30, 0.72);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(12px);
+      }
+
+      a.card:hover {
+        border-color: rgba(45, 212, 191, 0.7);
+        box-shadow: 0 0 28px rgba(45, 212, 191, 0.14);
+      }
+
+      a.card:focus-visible {
+        outline: 2px solid #2dd4bf;
+        outline-offset: 3px;
+      }
+
+      .index {
+        color: #67e8f9;
+        font-variant-numeric: tabular-nums;
+        font-size: 12px;
+        letter-spacing: 0.16em;
+      }
+
+      h2 {
+        margin: 10px 0 8px;
+        font-size: 28px;
+      }
+
+      p {
+        margin: 0;
+        color: #a9bccd;
+        line-height: 1.7;
+      }
+
+      .go {
+        display: inline-block;
+        margin-top: 18px;
+        color: #d8fff6;
+      }
+
+      footer {
+        margin-top: 28px;
+        color: #7f93a8;
+        font-size: 13px;
+      }
+
+      @media (max-width: 760px) {
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="kicker">临港科创产业园</p>
+      <h1>产业运营平台</h1>
+      <p class="lead">
+        选择运营中台或产业驾驶舱。两个应用目前都是可点击的中文菜单壳，页面内容、登录和数据接口尚未接入。
+      </p>
+      <div class="cards">
+        <a class="card" href="admin/">
+          <div class="index">01 · 中台</div>
+          <h2>运营中台</h2>
+          <p>工作台、产业招商、签约、企业档案、空间、政策兑现与系统设置。</p>
+          <span class="go">进入中台</span>
+        </a>
+        <a class="card" href="screen/">
+          <div class="index">02 · 驾驶舱</div>
+          <h2>产业驾驶舱</h2>
+          <p>招商态势、签约看板、企业分布、空间利用、政策兑现与告警中心。</p>
+          <span class="go">进入驾驶舱</span>
+        </a>
+      </div>
+      <footer>第一天脚手架 · 静态页面入口</footer>
+    </main>
+  </body>
+</html>
