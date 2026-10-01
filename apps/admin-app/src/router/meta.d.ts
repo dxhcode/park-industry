@@ -6,5 +6,6 @@ declare module 'vue-router' {
     group?: string
     description?: string
     hints?: string[]
+    public?: boolean
   }
 }

@@ -53,7 +53,7 @@ const hints = computed(() => route.meta.hints ?? [])
 
 .eyebrow {
   margin: 0 0 6px;
-  color: #0f766e;
+  color: var(--park-color-primary);
   font-size: 12px;
   letter-spacing: 0.16em;
 }
@@ -95,7 +95,7 @@ h1 {
   bottom: 0;
   left: 0;
   width: 3px;
-  background: linear-gradient(#14b8a6, #e8c48a);
+  background: linear-gradient(var(--park-color-primary), var(--park-color-highlight));
 }
 
 .metric span {
@@ -127,14 +127,14 @@ h1 {
   border-radius: 16px;
   text-align: center;
   background:
-    radial-gradient(520px 180px at 100% 0%, rgba(20, 184, 166, 0.1), transparent 60%),
+    radial-gradient(520px 180px at 100% 0%, rgba(29, 57, 196, 0.08), transparent 60%),
     #fff;
 }
 
 .glyph {
   width: 72px;
   height: 72px;
-  color: #0f766e;
+  color: var(--park-color-primary);
 }
 
 .stage h2 {

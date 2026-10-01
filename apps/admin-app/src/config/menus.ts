@@ -141,7 +141,7 @@ export const adminMenus: MenuNode[] = [
     title: '系统设置',
     icon: SettingOutlined,
     path: '/settings',
-    description: '预留组织、字典和权限配置。当前版本不包含登录与账号体系。',
+    description: '登录使用本机演示账号。组织、字典和角色配置仍待接入。',
     hints: ['组织架构', '数据字典', '角色权限'],
   },
 ]

@@ -5,7 +5,7 @@
 - `apps/admin-app`：运营中台
 - `apps/screen-app`：产业驾驶舱
 
-页面路由已经接通，内容是空占位。登录、接口、图表、地图和后端不在本日范围。
+页面路由已经接通。第二天补上运营中台的本地登录，以及招商项目、签约合同的列表、详情和表单。线索、拜访、履约一并可点。其余菜单仍是占位。接口、图表、地图和后端不在本日范围。
 
 ## 环境
 
@@ -27,6 +27,33 @@ pnpm dev:screen
 - 产业驾驶舱：<http://localhost:5174/park-industry/screen/>
 
 Vite `base` 分别为 `/park-industry/admin/` 和 `/park-industry/screen/`，与 GitHub Pages 项目站点路径一致。
+
+## 登录
+
+运营中台除登录页外都需要本地会话，会话写在 `localStorage` 键 `park-industry.session`。演示密码都是 `demo123`。
+
+| 账号 | 姓名 | 角色 | 默认园区 |
+| --- | --- | --- | --- |
+| `chenqm` | 陈启明 | 园区管理员 | 滨江云栖科创园 |
+| `zhoulan` | 周岚 | 招商经理 | 临港智造产业园 |
+| `liucheng` | 刘澄 | 签约专员 | 光谷生命科学园 |
+
+退出登录在顶栏右侧。招商和签约的改动保存在 `park-industry.pipeline.v1`，顶栏「恢复示例」可以盖回初始数据。
+
+## 招商与签约
+
+产业招商：
+
+- 项目库：`/investment/projects`，列表、详情、新建和编辑
+- 线索：`/investment/leads`，可转化为项目
+- 拜访：`/investment/visits`，挂在项目或线索上
+
+签约管理：
+
+- 合同：`/signing/contracts`，必须关联招商项目
+- 履约：`/signing/performance`，挂在合同上
+
+样例园区与 park-shared 主数据对齐：滨江云栖科创园、临港智造产业园、光谷生命科学园。企业、电话和金额都是虚构的。
 
 ## 菜单
 
