@@ -54,7 +54,7 @@ onUnmounted(() => {
           <span class="wing wing-right" />
         </div>
         <div class="side side-end">
-          <span class="pill">数据未接入</span>
+          <span class="pill">第四天接入</span>
         </div>
       </header>
 
@@ -66,14 +66,18 @@ onUnmounted(() => {
           </router-link>
         </nav>
         <main class="stage">
-          <router-view />
+          <router-view v-slot="{ Component, route: current }">
+            <transition name="scene" mode="out-in">
+              <component :is="Component" :key="current.path" />
+            </transition>
+          </router-view>
         </main>
       </div>
 
       <footer class="statusbar">
         <span>产业运营平台</span>
-        <span>场景骨架</span>
-        <span>指标位留空</span>
+        <span>场景壳</span>
+        <span>驾驶舱第四天开放</span>
       </footer>
     </div>
   </a-config-provider>
@@ -292,6 +296,23 @@ onUnmounted(() => {
   min-height: 0;
 }
 
+.scene-enter-active,
+.scene-leave-active {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.scene-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.scene-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
 .statusbar {
   display: flex;
   gap: 22px;
@@ -375,6 +396,16 @@ onUnmounted(() => {
   .scan,
   .pulse i {
     animation: none;
+  }
+
+  .scene-enter-active,
+  .scene-leave-active {
+    transition: none;
+  }
+
+  .scene-enter-from,
+  .scene-leave-to {
+    transform: none;
   }
 }
 </style>

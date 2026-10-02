@@ -1,4 +1,20 @@
 import { parks } from '@/mock/parks'
+import type {
+  DictState,
+  EnterpriseStatus,
+  EventKind,
+  EventStatus,
+  OrgKind,
+  PolicyStatus,
+  ReportStatus,
+  RoleName,
+  RoleScope,
+  RoleState,
+  SpaceKind,
+  SpaceStatus,
+  TaskKind,
+  TaskStatus,
+} from '@/mock/ops-types'
 import type { ContractKind, ContractStatus, LeadStatus, PerformanceStatus, ProjectSource, ProjectStage, VisitKind, VisitStatus } from '@/mock/types'
 
 export const projectStages: ProjectStage[] = ['线索', '初洽', '尽调', '谈判', '签约', '落地', '搁置']
@@ -10,6 +26,21 @@ export const leadStatuses: LeadStatus[] = ['新线索', '跟进中', '已转化'
 export const visitKinds: VisitKind[] = ['来园接待', '外出拜访']
 export const visitStatuses: VisitStatus[] = ['待进行', '待纪要', '已完成']
 export const performanceStatuses: PerformanceStatus[] = ['正常履约', '即将到期', '逾期', '已完成']
+export const taskKinds: TaskKind[] = ['线索跟进', '拜访安排', '合同审阅', '空间巡检', '政策审核']
+export const taskStatuses: TaskStatus[] = ['待处理', '进行中', '已完成']
+export const enterpriseStatuses: EnterpriseStatus[] = ['在园', '重点', '待完善', '已迁出']
+export const spaceKinds: SpaceKind[] = ['研发楼', '厂房', '中试楼', '配套']
+export const spaceStatuses: SpaceStatus[] = ['可招商', '在租', '已售', '装修中', '空置']
+export const policyStatuses: PolicyStatus[] = ['申报中', '审核中', '待兑付', '已兑付', '退回']
+export const eventKinds: EventKind[] = ['推介会', '来园考察', '渠道沙龙', '外出招商']
+export const eventStatuses: EventStatus[] = ['筹备中', '待接待', '进行中', '已结束']
+export const reportStatuses: ReportStatus[] = ['草稿', '已发布']
+export const orgKinds: OrgKind[] = ['园区', '部门', '岗位']
+export const dictStates: DictState[] = ['启用', '停用']
+export const roleNames: RoleName[] = ['园区管理员', '招商经理', '签约专员', '企业服务', '空间运营']
+export const roleScopes: RoleScope[] = ['全部功能', '招商与企业', '签约与政策', '空间与促进', '只读查阅']
+export const roleStates: RoleState[] = ['启用', '停用']
+export const reportParkOptions = [{ label: '三园合计', value: 'all' }, ...parks.map((item) => ({ label: item.name, value: item.id }))]
 
 export function toOptions(values: readonly string[], allLabel?: string) {
   const options = values.map((value) => ({ label: value, value }))

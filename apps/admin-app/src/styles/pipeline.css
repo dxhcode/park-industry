@@ -78,10 +78,20 @@
   list-style: none;
 }
 
-.related a {
+.related a,
+.jump-row a {
   color: var(--park-color-primary);
   font-weight: 600;
   text-decoration: none;
+}
+
+.jump-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
 }
 
 .related li {

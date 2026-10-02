@@ -36,3 +36,8 @@ export function parkName(parkId: string): string {
 export function parkShortName(parkId: string): string {
   return findPark(parkId)?.shortName ?? '—'
 }
+
+export function parkLabel(parkId: string): string {
+  if (parkId === 'all') return '三园合计'
+  return parkName(parkId)
+}

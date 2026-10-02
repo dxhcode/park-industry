@@ -44,7 +44,7 @@ export const adminMenus: MenuNode[] = [
     title: '工作台',
     icon: DashboardOutlined,
     path: '/workbench',
-    description: '汇集招商线索、在谈项目、签约进度与空间去化，作为运营人员进入系统后的起点。',
+    description: '汇总待办、待跟进线索、在谈项目和本周拜访，作为运营人员进入系统后的起点。',
     hints: ['待跟进线索', '在谈项目', '本周拜访'],
   },
   {
@@ -133,7 +133,7 @@ export const adminMenus: MenuNode[] = [
     title: '数据分析',
     icon: PieChartOutlined,
     path: '/analytics',
-    description: '观察招商转化、签约、税收贡献与入驻率。图表将在后续迭代接入。',
+    description: '登记各园区的阶段快报，留下线索转化、签约额和入驻率。图表驾驶舱后续再接入。',
     hints: ['线索转化', '签约额', '入驻率'],
   },
   {
@@ -141,7 +141,7 @@ export const adminMenus: MenuNode[] = [
     title: '系统设置',
     icon: SettingOutlined,
     path: '/settings',
-    description: '登录使用本机演示账号。组织、字典和角色配置仍待接入。',
+    description: '维护组织架构、数据字典和角色权限。登录仍使用三个演示账号。',
     hints: ['组织架构', '数据字典', '角色权限'],
   },
 ]
@@ -167,7 +167,7 @@ export function flattenMenus(menus: MenuNode[]): FlatPage[] {
         key: menu.key,
         title: menu.title,
         path: menu.path,
-        group: '总览',
+        group: menu.title,
         description: menu.description,
         hints: menu.hints,
       })

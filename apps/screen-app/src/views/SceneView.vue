@@ -6,6 +6,11 @@ const route = useRoute()
 const title = computed(() => route.meta.title ?? '未命名场景')
 const description = computed(() => route.meta.description ?? '场景骨架已就绪。')
 const hints = computed(() => route.meta.hints ?? [])
+const gaps = [
+  { title: '地图', text: '落点留到第四天' },
+  { title: '图表', text: '指标图留到第四天' },
+  { title: '告警', text: '列表留到第四天' },
+]
 </script>
 
 <template>
@@ -16,7 +21,7 @@ const hints = computed(() => route.meta.hints ?? [])
         <h2>{{ title }}</h2>
         <p class="desc">{{ description }}</p>
       </div>
-      <a-tag color="gold">待接入</a-tag>
+      <a-tag color="gold">第四天接入</a-tag>
     </header>
 
     <div class="body">
@@ -27,15 +32,18 @@ const hints = computed(() => route.meta.hints ?? [])
           <em>暂无数据</em>
         </article>
       </div>
-      <div class="canvas">
-        <div class="radar" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-          <i></i>
+      <div class="soon">
+        <article class="glass hero">
+          <p class="soon-kicker">即将开放</p>
+          <h3>{{ title }}还没有接上数据</h3>
+          <p>这张卡片只是空位。地图、图表和告警列表都留在第四天，今天可以切换场景，但不会出现驾驶舱数字。</p>
+        </article>
+        <div class="chips">
+          <article v-for="item in gaps" :key="item.title" class="glass chip">
+            <strong>{{ item.title }}</strong>
+            <span>{{ item.text }}</span>
+          </article>
         </div>
-        <h3>场景骨架已就绪</h3>
-        <p>导航可以切换。指标、图表、地图和告警列表都留空，等待后续接入。</p>
       </div>
     </div>
   </section>
@@ -128,76 +136,80 @@ h2 {
   text-shadow: 0 0 12px rgba(45, 212, 191, 0.35);
 }
 
-.canvas {
+.soon {
   display: grid;
-  place-items: center;
-  align-content: center;
-  min-height: 280px;
-  padding: 24px;
-  border: 1px dashed rgba(125, 211, 252, 0.35);
+  gap: 12px;
+  align-content: start;
+}
+
+.glass {
+  border: 1px solid rgba(125, 211, 252, 0.28);
   border-radius: 16px;
-  text-align: center;
   background:
-    radial-gradient(280px 180px at 50% 42%, rgba(45, 212, 191, 0.12), transparent 70%),
+    linear-gradient(180deg, rgba(20, 40, 58, 0.55), rgba(8, 16, 28, 0.35)),
     rgba(5, 10, 18, 0.35);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 16px 40px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
 }
 
-.radar {
-  position: relative;
-  width: 148px;
-  height: 148px;
-  margin-bottom: 8px;
+.hero {
+  min-height: 220px;
+  padding: 28px 24px;
+  background:
+    radial-gradient(280px 160px at 18% 20%, rgba(45, 212, 191, 0.16), transparent 70%),
+    linear-gradient(180deg, rgba(20, 40, 58, 0.55), rgba(8, 16, 28, 0.35));
 }
 
-.radar span,
-.radar i {
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(45, 212, 191, 0.35);
-  border-radius: 50%;
-}
-
-.radar span:nth-child(2) {
-  inset: 22px;
-}
-
-.radar span:nth-child(3) {
-  inset: 46px;
-}
-
-.radar i {
-  background: conic-gradient(from 0deg, transparent 0 72%, rgba(45, 212, 191, 0.35) 100%);
-  border: 0;
-  animation: sweep 6s linear infinite;
+.soon-kicker {
+  margin: 0 0 8px;
+  color: #f3d7a6;
+  font-size: 12px;
+  letter-spacing: 0.18em;
 }
 
 h3 {
-  margin: 8px 0;
-  font-size: 18px;
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.04em;
 }
 
-.canvas p {
-  max-width: 420px;
-  margin: 0;
+.hero p:last-child {
+  max-width: 520px;
+  margin: 12px 0 0;
   color: #9fb0c3;
   line-height: 1.7;
 }
 
-@keyframes sweep {
-  to {
-    transform: rotate(360deg);
-  }
+.chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.chip {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 92px;
+  padding: 16px;
+}
+
+.chip strong {
+  color: #e7f3ff;
+  font-size: 16px;
+}
+
+.chip span {
+  color: #93a8bd;
+  font-size: 13px;
 }
 
 @media (max-width: 1100px) {
-  .body {
+  .body,
+  .chips {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .radar i {
-    animation: none;
   }
 }
 </style>

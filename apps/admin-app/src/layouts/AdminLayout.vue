@@ -7,6 +7,7 @@ import type { MenuProps } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { adminMenus } from '@/config/menus'
 import { useAuthStore } from '@/stores/auth'
+import { useOpsStore } from '@/stores/ops'
 import { usePipelineStore } from '@/stores/pipeline'
 import { useShellStore } from '@/stores/shell'
 import { adminAntdTheme } from '@/theme/antd'
@@ -14,6 +15,7 @@ import { adminAntdTheme } from '@/theme/antd'
 const shell = useShellStore()
 const auth = useAuthStore()
 const pipeline = usePipelineStore()
+const ops = useOpsStore()
 const route = useRoute()
 const router = useRouter()
 const openKeys = ref<string[]>([])
@@ -101,11 +103,12 @@ function logout() {
 function resetData() {
   Modal.confirm({
     title: '恢复示例数据？',
-    content: '本机对招商项目、线索、拜访、合同和履约的修改会被示例数据覆盖。登录状态保留。',
+    content: '本机对招商签约，以及待办、企业、空间、政策、促进、快报和设置的修改会被示例数据覆盖。登录状态保留。',
     okText: '恢复',
     cancelText: '取消',
     onOk() {
       pipeline.reset()
+      ops.reset()
       message.success('已恢复示例数据')
     },
   })
@@ -167,7 +170,11 @@ function resetData() {
           <button class="logout" type="button" @click="logout">退出登录</button>
         </a-layout-header>
         <a-layout-content class="content">
-          <router-view />
+          <router-view v-slot="{ Component, route: current }">
+            <transition name="page" mode="out-in">
+              <component :is="Component" :key="current.path" />
+            </transition>
+          </router-view>
         </a-layout-content>
       </a-layout>
     </a-layout>
@@ -256,11 +263,16 @@ function resetData() {
   width: 100%;
   margin-inline: 0;
   border-radius: 8px;
+  transition:
+    background-color 0.24s ease,
+    color 0.24s ease,
+    box-shadow 0.24s ease;
 }
 
 .menu-wrap :deep(.ant-menu-item-selected) {
   background: linear-gradient(90deg, rgba(47, 84, 235, 0.42), rgba(198, 161, 91, 0.16)) !important;
   color: #f4f7ff !important;
+  box-shadow: inset 3px 0 0 #c6a15b;
 }
 
 .menu-wrap :deep(.ant-menu-item-selected::after) {
@@ -379,6 +391,37 @@ function resetData() {
 
 .content {
   padding: 20px 24px 32px;
+}
+
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter-active,
+  .page-leave-active,
+  .menu-wrap :deep(.ant-menu-item),
+  .menu-wrap :deep(.ant-menu-submenu-title) {
+    transition: none;
+  }
+
+  .page-enter-from,
+  .page-leave-to {
+    transform: none;
+  }
 }
 
 @media (max-width: 860px) {
