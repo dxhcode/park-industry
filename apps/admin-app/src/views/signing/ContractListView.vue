@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { contractStatuses, parkFilterOptions, toOptions } from '@/mock/options'
@@ -61,6 +62,7 @@ function openDetail(id: string) {
   <section>
     <PageHeader eyebrow="签约管理" title="合同" subtitle="登记投资协议、租赁合同和补充协议，并挂到对应招商项目。">
       <template #extra>
+        <ScreenJump scene="signing">签约看板</ScreenJump>
         <a-button type="primary" @click="router.push('/signing/contracts/new')">新建合同</a-button>
       </template>
     </PageHeader>

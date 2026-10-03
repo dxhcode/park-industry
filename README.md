@@ -5,7 +5,7 @@
 - `apps/admin-app`：运营中台
 - `apps/screen-app`：产业驾驶舱
 
-页面路由已经接通。第二天补上运营中台的本地登录，以及招商项目、签约合同的列表、详情和表单。第三天把其余菜单做成可点击的列表、详情和表单。接口、图表、地图和后端仍不在本日范围，驾驶舱留到第四天。
+页面路由已经接通。第二天补上运营中台的本地登录，以及招商项目、签约合同的列表、详情和表单。第三天把其余菜单做成可点击的列表、详情和表单。第四天接上产业驾驶舱的地图、图表和告警，并准备 GitHub Pages 静态产物。没有后端。
 
 ## 环境
 
@@ -64,12 +64,20 @@ Vite `base` 分别为 `/park-industry/admin/` 和 `/park-industry/screen/`，与
 - 产业空间
 - 政策兑现
 - 投资促进：推介、考察和渠道沙龙
-- 数据分析：阶段快报，不画图表
+- 数据分析：阶段快报，图表在产业驾驶舱
 - 系统设置：组织架构、数据字典、角色权限
 
 三个演示账号不变。角色页里出现的其他同事不能登录。列表筛空时有空状态，可以清空筛选或新建。侧栏选中和页面切换有轻微动效。
 
-产业驾驶舱仍是空场景。每张场景用玻璃卡片标明地图、图表和告警留到第四天，不放驾驶舱数字。
+## 产业驾驶舱
+
+六张场景都有数字：招商态势、签约看板、企业分布、空间利用、政策兑现、告警中心。底图是示意，不是测绘。名称与招商签约样例对齐，用滨江云栖科创园、临港智造产业园、光谷生命科学园。电话和金额都是虚构的。
+
+左侧可以换场景，也可以把范围收成单个园区。顶栏有滚动指标。点地图上的园区，图表跟着收窄；再点一次回到三园合计。
+
+本地开发时，驾驶舱和中台不在同一个端口，所以驾驶舱用内置示例，数字与中台初始样例一致。GitHub Pages 上两个应用同域。若本机已经有 `park-industry.pipeline.v1` 或 `park-industry.ops.v1`，驾驶舱只读这两份台账，不会改写。没有台账时仍用同一套示例。
+
+从中台顶栏「驾驶舱」可以跳到和当前菜单对应的场景。工作台、招商和签约页面上也有入口。驾驶舱右上角「返回中台」回到跳转前的页面。本地会打开 `5174` / `5173`，Pages 上则走 `/park-industry/screen/` 和 `/park-industry/admin/`。
 
 ## 菜单
 
@@ -118,8 +126,6 @@ dist/screen/
 
 ## 推送到 dist 分支
 
-Pages 站点计划在第四天开启。脚本已经备好，今晚不必执行，也不必在仓库设置里打开 Pages。
-
 确认工作区已提交后：
 
 ```bash
@@ -128,13 +134,15 @@ pnpm pages:publish
 
 脚本会重新执行 `pages:build`，再把 `dist/` 里的构建产物强制推送到 `dist` 分支。这个分支只保存静态产物，不保存源码。手改 `dist` 分支会被下一次发布覆盖。
 
-发布后，在 GitHub 仓库 Settings → Pages 中选择：
+站点要能打开，还得在 GitHub 仓库 Settings → Pages 里选择：
 
 - Source：Deploy from a branch
 - Branch：`dist`，目录 `/ (root)`
 
+这一项在仓库设置里，发布脚本改不了。
+
 站点路径：
 
-- `https://<owner>.github.io/park-industry/`
-- `https://<owner>.github.io/park-industry/admin/`
-- `https://<owner>.github.io/park-industry/screen/`
+- https://dxhcode.github.io/park-industry/
+- https://dxhcode.github.io/park-industry/admin/
+- https://dxhcode.github.io/park-industry/screen/

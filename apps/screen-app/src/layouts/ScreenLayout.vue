@@ -1,11 +1,20 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import theme from 'ant-design-vue/es/theme'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import Ticker from '@/components/Ticker.vue'
 import { scenes } from '@/config/scenes'
+import { parks } from '@/mock/ledger'
+import { adminHref } from '@/nav/adminLink'
+import { useSceneData } from '@/composables/useSceneData'
 import { useCockpitStore } from '@/stores/cockpit'
+import { useLedgerStore } from '@/stores/ledger'
 
 const cockpit = useCockpitStore()
+const ledger = useLedgerStore()
+const sceneData = useSceneData()
+const route = useRoute()
 
 const themeConfig = {
   algorithm: theme.darkAlgorithm,
@@ -20,6 +29,13 @@ const themeConfig = {
 }
 
 const iso = computed(() => cockpit.now.toISOString())
+const backHref = computed(() => adminHref(route.query.from))
+const sceneQuery = computed(() => {
+  const from = route.query.from
+  if (typeof from !== 'string') return {}
+  if (!from.startsWith('/') || from.startsWith('//') || from.includes('://') || from.includes('?')) return {}
+  return { from }
+})
 
 onMounted(() => {
   cockpit.startClock()
@@ -42,28 +58,51 @@ onUnmounted(() => {
 
       <header class="topbar">
         <div class="side">
-          <span class="pulse"><i />链路待机</span>
+          <span class="pulse"><i />链路正常</span>
           <time :datetime="iso">{{ cockpit.clockText }}</time>
         </div>
         <div class="title-wrap">
           <span class="wing" />
           <div class="titles">
             <p>园区产业运营</p>
-            <h1>{{ cockpit.parkName }} · 产业驾驶舱</h1>
+            <h1>{{ cockpit.headline }} · 产业驾驶舱</h1>
           </div>
           <span class="wing wing-right" />
         </div>
         <div class="side side-end">
-          <span class="pill">第四天接入</span>
+          <a class="back" :href="backHref">返回中台</a>
         </div>
       </header>
 
+      <Ticker :items="sceneData.tickerItems" />
+
       <div class="workspace">
         <nav class="scenes" aria-label="场景导航">
-          <router-link v-for="(scene, index) in scenes" :key="scene.path" :to="scene.path" class="scene">
+          <router-link
+            v-for="(scene, index) in scenes"
+            :key="scene.path"
+            :to="{ path: scene.path, query: sceneQuery }"
+            class="scene"
+          >
             <em>{{ String(index + 1).padStart(2, '0') }}</em>
             <span>{{ scene.title }}</span>
           </router-link>
+          <p class="nav-label">范围</p>
+          <button type="button" class="scene park" :class="{ on: cockpit.parkId === 'all' }" @click="cockpit.showAll">
+            <em>00</em>
+            <span>三园合计</span>
+          </button>
+          <button
+            v-for="park in parks"
+            :key="park.id"
+            type="button"
+            class="scene park"
+            :class="{ on: cockpit.parkId === park.id }"
+            @click="cockpit.setPark(park.id)"
+          >
+            <em :style="{ color: park.color }">●</em>
+            <span>{{ park.shortName }}</span>
+          </button>
         </nav>
         <main class="stage">
           <router-view v-slot="{ Component, route: current }">
@@ -76,8 +115,8 @@ onUnmounted(() => {
 
       <footer class="statusbar">
         <span>产业运营平台</span>
-        <span>场景壳</span>
-        <span>驾驶舱第四天开放</span>
+        <span>{{ ledger.label }}</span>
+        <span>电话与金额均为虚构</span>
       </footer>
     </div>
   </a-config-provider>
@@ -223,15 +262,6 @@ onUnmounted(() => {
   transform: scaleX(-1);
 }
 
-.pill {
-  padding: 6px 12px;
-  border: 1px solid rgba(232, 196, 138, 0.55);
-  border-radius: 999px;
-  color: #f3d7a6;
-  background: rgba(232, 196, 138, 0.08);
-  box-shadow: inset 0 0 12px rgba(232, 196, 138, 0.12);
-}
-
 .workspace {
   display: grid;
   grid-template-columns: 212px minmax(0, 1fr);
@@ -244,14 +274,42 @@ onUnmounted(() => {
 .scenes {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.nav-label {
+  margin: 6px 2px 0;
+  color: #7f93a8;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+
+.back {
+  padding: 6px 12px;
+  border: 1px solid rgba(45, 212, 191, 0.55);
+  border-radius: 999px;
+  color: #d8fff6;
+  text-decoration: none;
+  background: rgba(45, 212, 191, 0.08);
+  box-shadow: inset 0 0 12px rgba(45, 212, 191, 0.12);
+}
+
+.back:hover {
+  border-color: #2dd4bf;
+}
+
+.back:focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 2px;
 }
 
 .scene {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
+  padding: 9px 12px;
   border: 1px solid rgba(148, 196, 214, 0.18);
   border-radius: 14px;
   color: #d5e6f5;
@@ -272,9 +330,26 @@ onUnmounted(() => {
   font-size: 12px;
 }
 
+button.scene {
+  width: 100%;
+  color: #d5e6f5;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .scene:hover {
   border-color: rgba(45, 212, 191, 0.45);
   transform: translateX(3px);
+}
+
+.scene.on {
+  border-color: rgba(243, 215, 166, 0.85);
+  color: #fff8ea;
+  background: linear-gradient(90deg, rgba(243, 215, 166, 0.2), rgba(12, 22, 36, 0.45));
+  box-shadow:
+    0 0 18px rgba(243, 215, 166, 0.14),
+    inset 0 0 0 1px rgba(243, 215, 166, 0.25);
 }
 
 .scene.router-link-active {
@@ -292,8 +367,10 @@ onUnmounted(() => {
 }
 
 .stage {
+  height: 100%;
   min-width: 0;
   min-height: 0;
+  overflow: hidden;
 }
 
 .scene-enter-active,

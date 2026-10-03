@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { computed, onScopeDispose, ref } from 'vue'
+import { parkById } from '@/mock/ledger'
 
 export const useCockpitStore = defineStore('cockpit', () => {
-  const parkName = ref('临港科创产业园')
+  const parkId = ref('all')
   const now = ref(new Date())
   let timer: ReturnType<typeof setInterval> | undefined
 
@@ -19,6 +20,24 @@ export const useCockpitStore = defineStore('cockpit', () => {
     }).format(now.value),
   )
 
+  const headline = computed(() => {
+    if (parkId.value === 'all') return '三园联屏'
+    return parkById(parkId.value)?.name ?? '三园联屏'
+  })
+
+  const scopeLabel = computed(() => {
+    if (parkId.value === 'all') return '三园合计'
+    return parkById(parkId.value)?.name ?? '三园合计'
+  })
+
+  function setPark(id: string) {
+    parkId.value = parkId.value === id ? 'all' : id
+  }
+
+  function showAll() {
+    parkId.value = 'all'
+  }
+
   function stopClock() {
     if (!timer) return
     clearInterval(timer)
@@ -34,5 +53,5 @@ export const useCockpitStore = defineStore('cockpit', () => {
 
   onScopeDispose(stopClock)
 
-  return { parkName, now, clockText, startClock, stopClock }
+  return { parkId, now, clockText, headline, scopeLabel, setPark, showAll, startClock, stopClock }
 })

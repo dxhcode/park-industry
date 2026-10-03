@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, toOptions, visitStatuses } from '@/mock/options'
@@ -53,6 +54,7 @@ function linkLabel(item: Visit) {
   <section>
     <PageHeader eyebrow="产业招商" title="拜访" subtitle="来园接待和外出拜访。记录挂在项目或线索上。">
       <template #extra>
+        <ScreenJump scene="situation">招商态势</ScreenJump>
         <a-button type="primary" @click="router.push('/investment/visits/new')">登记拜访</a-button>
       </template>
     </PageHeader>

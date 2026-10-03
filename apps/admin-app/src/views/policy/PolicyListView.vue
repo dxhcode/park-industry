@@ -5,6 +5,7 @@ import type { TableColumnsType } from 'ant-design-vue'
 import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, policyStatuses, toOptions } from '@/mock/options'
@@ -62,6 +63,7 @@ function onEmptyPrimary() {
   <section>
     <PageHeader eyebrow="政策兑现" title="政策兑现" subtitle="申报、审核和兑付分开记。退回的材料留在列表里，补齐后可以改回申报中。">
       <template #extra>
+        <ScreenJump scene="policy">政策兑现</ScreenJump>
         <a-button type="primary" @click="router.push('/policy/new')">新建申报</a-button>
       </template>
     </PageHeader>

@@ -5,6 +5,8 @@ import type { TableColumnsType } from 'ant-design-vue'
 import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
+import { screenHref } from '@/nav/screenLink'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, taskKinds, taskStatuses, toOptions } from '@/mock/options'
@@ -48,6 +50,9 @@ const columns: TableColumnsType<WorkTask> = [
 ]
 
 const pagination = { pageSize: 8, showSizeChanger: false, showTotal: (total: number) => `共 ${total} 条` }
+const situationHref = screenHref('situation', '/workbench')
+const signingHref = screenHref('signing', '/workbench')
+const alertsHref = screenHref('alerts', '/workbench')
 
 function clearFilters() {
   keyword.value = ''
@@ -69,6 +74,8 @@ function onEmptyPrimary() {
   <section>
     <PageHeader eyebrow="工作台" title="工作台" subtitle="待办写在本机。线索、项目和拜访仍从招商菜单进入，数字跟那条主线走。">
       <template #extra>
+        <ScreenJump scene="situation">招商态势</ScreenJump>
+        <ScreenJump scene="alerts">告警中心</ScreenJump>
         <a-button type="primary" @click="router.push('/workbench/tasks/new')">新建待办</a-button>
       </template>
     </PageHeader>
@@ -79,6 +86,9 @@ function onEmptyPrimary() {
       <KpiStat label="未完成待办" :value="openTasks" hint="不含已完成" />
     </div>
     <ul class="jump-row">
+      <li><a :href="situationHref">招商态势</a></li>
+      <li><a :href="signingHref">签约看板</a></li>
+      <li><a :href="alertsHref">告警中心</a></li>
       <li><router-link to="/investment/leads">线索</router-link></li>
       <li><router-link to="/investment/projects">项目库</router-link></li>
       <li><router-link to="/investment/visits">拜访</router-link></li>

@@ -3,7 +3,9 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import EmptyState from '@/components/EmptyState.vue'
+import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { formatArea, includesKeyword } from '@/mock/helpers'
 import { enterpriseStatuses, parkFilterOptions, toOptions } from '@/mock/options'
@@ -61,6 +63,7 @@ function onEmptyPrimary() {
   <section>
     <PageHeader eyebrow="企业档案" title="企业档案" subtitle="在园、重点和尚未入驻的企业放在一起。名称与招商项目对齐，联系电话是虚构的。">
       <template #extra>
+        <ScreenJump scene="enterprises">企业分布</ScreenJump>
         <a-button type="primary" @click="router.push('/enterprises/new')">新建档案</a-button>
       </template>
     </PageHeader>

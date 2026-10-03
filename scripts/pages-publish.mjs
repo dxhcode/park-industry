@@ -43,4 +43,7 @@ run('git', ['push', '--force', remote, 'HEAD:dist'], dist)
 rmSync(resolve(dist, '.git'), { recursive: true, force: true })
 
 console.log('已强制更新 dist 分支。')
-console.log('GitHub Pages 需在仓库设置里选择 dist 分支的根目录。计划在第四天开启，今晚不必发布。')
+console.log('GitHub 仓库 Settings → Pages 需选择 Branch: dist，目录 / (root)。')
+console.log('https://dxhcode.github.io/park-industry/')
+console.log('https://dxhcode.github.io/park-industry/admin/')
+console.log('https://dxhcode.github.io/park-industry/screen/')

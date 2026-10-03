@@ -5,6 +5,7 @@ import type { TableColumnsType } from 'ant-design-vue'
 import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, reportStatuses, toOptions } from '@/mock/options'
@@ -64,9 +65,10 @@ function onEmptyPrimary() {
     <PageHeader
       eyebrow="数据分析"
       title="数据分析"
-      subtitle="这里登记阶段快报，不画图表。地图和指标驾驶舱留到第四天。"
+      subtitle="这里仍只登记阶段快报。地图和指标图在产业驾驶舱。"
     >
       <template #extra>
+        <ScreenJump scene="situation">招商态势</ScreenJump>
         <a-button type="primary" @click="router.push('/analytics/new')">新建快报</a-button>
       </template>
     </PageHeader>
@@ -74,13 +76,13 @@ function onEmptyPrimary() {
       class="notice"
       type="info"
       show-icon
-      message="快报只保存文字和数值。转化率、签约额、入驻率的图留在产业驾驶舱，本日不接。"
+      message="快报仍只保存文字和数值。转化率、签约额和空置图在产业驾驶舱。"
     />
     <div class="kpi-grid">
       <KpiStat label="已发布" :value="published" hint="可以对外转述的快报" />
       <KpiStat label="草稿" :value="drafts" hint="还没核对" />
       <KpiStat label="快报条数" :value="store.reports.length" hint="含三园合计" />
-      <KpiStat label="图表" value="—" hint="第四天再接入" />
+      <KpiStat label="驾驶舱" value="已接入" hint="从右上角进入" />
     </div>
     <div class="filter-bar">
       <a-input-search v-model:value="keyword" class="keyword" allow-clear placeholder="搜索快报、指标、周期或数值" />
@@ -92,7 +94,7 @@ function onEmptyPrimary() {
         <template #emptyText>
           <EmptyState
             :title="filteredOut ? '没有符合条件的快报' : '还没有阶段快报'"
-            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '先写一条周期、指标和数值。图表以后再补。'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '先写一条周期、指标和数值。图在产业驾驶舱。'"
             :primary="filteredOut ? '清空筛选' : '新建快报'"
             :secondary="filteredOut ? '新建快报' : ''"
             @primary-click="onEmptyPrimary"

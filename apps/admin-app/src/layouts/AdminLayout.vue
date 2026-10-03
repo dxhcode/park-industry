@@ -5,7 +5,9 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { Modal, message } from 'ant-design-vue'
 import type { MenuProps } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import ScreenJump from '@/components/ScreenJump.vue'
 import { adminMenus } from '@/config/menus'
+import { sceneForAdminPath } from '@/nav/screenLink'
 import { useAuthStore } from '@/stores/auth'
 import { useOpsStore } from '@/stores/ops'
 import { usePipelineStore } from '@/stores/pipeline'
@@ -35,6 +37,7 @@ const selectedKeys = computed(() => {
 
 const title = computed(() => shell.pageTitle || route.meta.title || '产业运营平台')
 const group = computed(() => route.meta.group ?? '')
+const cockpitScene = computed(() => sceneForAdminPath(route.path))
 
 const items = computed<MenuProps['items']>(() =>
   adminMenus.map((menu) => {
@@ -166,6 +169,7 @@ function resetData() {
             <strong>{{ auth.user?.name }}</strong>
             <span>{{ auth.user?.title }}</span>
           </div>
+          <ScreenJump :scene="cockpitScene" tone="dark">驾驶舱</ScreenJump>
           <button class="text-btn" type="button" @click="resetData">恢复示例</button>
           <button class="logout" type="button" @click="logout">退出登录</button>
         </a-layout-header>

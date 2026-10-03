@@ -1,7 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { scenes } from '@/config/scenes'
 import ScreenLayout from '@/layouts/ScreenLayout.vue'
-import SceneView from '@/views/SceneView.vue'
+import AlertsView from '@/views/AlertsView.vue'
+import EnterprisesView from '@/views/EnterprisesView.vue'
+import PolicyView from '@/views/PolicyView.vue'
+import SigningView from '@/views/SigningView.vue'
+import SituationView from '@/views/SituationView.vue'
+import SpaceView from '@/views/SpaceView.vue'
+
+const sceneViews = {
+  situation: SituationView,
+  signing: SigningView,
+  enterprises: EnterprisesView,
+  space: SpaceView,
+  policy: PolicyView,
+  alerts: AlertsView,
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +27,7 @@ const router = createRouter({
       children: scenes.map((scene) => ({
         path: scene.path.replace(/^\//, ''),
         name: scene.key,
-        component: SceneView,
+        component: sceneViews[scene.key as keyof typeof sceneViews],
         meta: {
           title: scene.title,
           group: '产业驾驶舱',

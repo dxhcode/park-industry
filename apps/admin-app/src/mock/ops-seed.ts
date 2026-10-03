@@ -529,7 +529,7 @@ export const seedReports: OpsReport[] = [
     valueText: '40%',
     owner: '陈启明',
     publishedAt: '2026-10-01',
-    summary: '本月有效线索 5 条，转项目 2 条，澄芯是其中一条。松麟仍缺融资说明，不计入转化。图表留到驾驶舱再画。',
+    summary: '本月有效线索 5 条，转项目 2 条，澄芯是其中一条。松麟仍缺融资说明，不计入转化。转化图在产业驾驶舱。',
   },
   {
     id: 'rpt-lg-sign',

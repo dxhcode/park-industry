@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { formatArea, includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, projectStages, toOptions } from '@/mock/options'
@@ -65,6 +66,7 @@ function recordId(record: InvestmentProject) {
   <section>
     <PageHeader eyebrow="产业招商" title="项目库" subtitle="跟踪储备、在谈、签约和已落地的招商项目。数据为园区样例，保存在本机。">
       <template #extra>
+        <ScreenJump scene="situation">招商态势</ScreenJump>
         <a-button type="primary" @click="router.push('/investment/projects/new')">新建项目</a-button>
       </template>
     </PageHeader>

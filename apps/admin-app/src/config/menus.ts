@@ -133,7 +133,7 @@ export const adminMenus: MenuNode[] = [
     title: '数据分析',
     icon: PieChartOutlined,
     path: '/analytics',
-    description: '登记各园区的阶段快报，留下线索转化、签约额和入驻率。图表驾驶舱后续再接入。',
+    description: '登记各园区的阶段快报，留下线索转化、签约额和入驻率。图表在产业驾驶舱。',
     hints: ['线索转化', '签约额', '入驻率'],
   },
   {

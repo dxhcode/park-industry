@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { performanceStatuses, toOptions } from '@/mock/options'
@@ -50,6 +51,7 @@ function contractLabel(id: string) {
   <section>
     <PageHeader eyebrow="签约管理" title="履约" subtitle="跟踪投资、开工、进场和投产节点。节点挂在合同上。">
       <template #extra>
+        <ScreenJump scene="signing">签约看板</ScreenJump>
         <a-button type="primary" @click="router.push('/signing/performance/new')">登记节点</a-button>
       </template>
     </PageHeader>

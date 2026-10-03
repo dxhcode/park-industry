@@ -5,6 +5,7 @@ import type { TableColumnsType } from 'ant-design-vue'
 import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { formatArea, includesKeyword } from '@/mock/helpers'
 import { parkFilterOptions, spaceKinds, spaceStatuses, toOptions } from '@/mock/options'
@@ -67,6 +68,7 @@ function onEmptyPrimary() {
   <section>
     <PageHeader eyebrow="产业空间" title="产业空间" subtitle="楼层和厂房按可招商、在租、空置分开记。在谈但没锁房的，状态仍是可招商。">
       <template #extra>
+        <ScreenJump scene="space">空间利用</ScreenJump>
         <a-button type="primary" @click="router.push('/space/new')">新建资源</a-button>
       </template>
     </PageHeader>

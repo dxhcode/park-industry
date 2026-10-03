@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
 import { leadStatuses, parkFilterOptions, toOptions } from '@/mock/options'
@@ -54,6 +55,7 @@ function projectLabel(id: string) {
   <section>
     <PageHeader eyebrow="产业招商" title="线索" subtitle="推介会、渠道和主动咨询进来的线索。转化后会挂到项目库。">
       <template #extra>
+        <ScreenJump scene="situation">招商态势</ScreenJump>
         <a-button type="primary" @click="router.push('/investment/leads/new')">登记线索</a-button>
       </template>
     </PageHeader>

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import MissingBlock from '@/components/MissingBlock.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { usePageTitle } from '@/composables/usePageTitle'
 import { confirmRemove } from '@/feedback/confirmRemove'
@@ -35,6 +36,7 @@ function remove() {
     <template v-else>
       <PageHeader eyebrow="数据分析" :title="report.title" :subtitle="report.summary">
         <template #extra>
+          <ScreenJump scene="situation">招商态势</ScreenJump>
           <a-button @click="router.push('/analytics')">返回列表</a-button>
           <a-button danger @click="remove">删除</a-button>
           <a-button type="primary" @click="router.push(`/analytics/${report.id}/edit`)">编辑</a-button>
@@ -51,7 +53,7 @@ function remove() {
           <a-descriptions-item label="编写人">{{ report.owner }}</a-descriptions-item>
           <a-descriptions-item label="发布日期">{{ report.publishedAt || '未发布' }}</a-descriptions-item>
         </a-descriptions>
-        <p class="prose chart-note">这条快报没有图表。驾驶舱里的图留到第四天。</p>
+        <p class="prose chart-note">这条快报本身不画图。同样的园区数字在产业驾驶舱里。</p>
       </div>
     </template>
   </section>

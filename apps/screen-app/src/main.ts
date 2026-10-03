@@ -8,6 +8,7 @@ import 'ant-design-vue/dist/reset.css'
 import App from './App.vue'
 import router from './router'
 import './styles/global.css'
+import './styles/scene.css'
 
 dayjs.locale('zh-cn')
 
