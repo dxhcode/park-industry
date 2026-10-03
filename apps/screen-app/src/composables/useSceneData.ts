@@ -220,7 +220,7 @@ export function useSceneData() {
         id: space.id,
         level: '重要',
         title: `${space.name}空置`,
-        detail: `${parkShort(space.parkId)} · ${formatArea(space.areaSqm)} · ${space.building}`,
+        detail: `${formatArea(space.areaSqm)} · ${space.building}`,
         park: parkShort(space.parkId),
       })
     }
@@ -244,7 +244,7 @@ export function useSceneData() {
         id: lead.id,
         level: '提示',
         title: lead.company,
-        detail: `${parkShort(lead.parkId)} · ${lead.industry} · ${lead.phone}`,
+        detail: `${lead.industry} · ${lead.phone}`,
         park: parkShort(lead.parkId),
       })
     }

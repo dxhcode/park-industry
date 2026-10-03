@@ -73,5 +73,6 @@ header span {
 .body {
   flex: 1;
   min-height: 0;
+  overflow: auto;
 }
 </style>

@@ -107,9 +107,10 @@ function heightOf(value: number) {
 .hbars {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  justify-content: center;
+  gap: 6px;
+  justify-content: flex-start;
   height: 100%;
+  overflow: auto;
 }
 
 .hrow {
