@@ -1,0 +1,40 @@
+:root {
+  --park-color-primary: #1d39c4;
+  --park-color-accent: #0e1320;
+  --park-color-highlight: #c6a15b;
+  --park-color-bg: #f3f5fb;
+  --park-color-surface: #ffffff;
+  --park-color-text: #1a1d26;
+  --park-color-text-secondary: #5c6578;
+  --park-color-border: rgba(14, 19, 32, 0.12);
+  --park-header-bg: #0e1320;
+  --park-header-text: #f4f7ff;
+  --park-sider-bg: #141a2a;
+  --park-radius: 10px;
+  --park-font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei',
+    sans-serif;
+  color: var(--park-color-text);
+  background: var(--park-color-bg);
+  font-family: var(--park-font-family);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--park-color-bg);
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+}
