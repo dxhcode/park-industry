@@ -146,3 +146,5 @@ pnpm pages:publish
 - https://dxhcode.github.io/park-industry/
 - https://dxhcode.github.io/park-industry/admin/
 - https://dxhcode.github.io/park-industry/screen/
+
+逐步演示看 [DEMO.md](./DEMO.md)。第一期还没做的部分看 [GAPS.md](./GAPS.md)。

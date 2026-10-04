@@ -38,7 +38,7 @@ const contractTotal = computed(() => data.contractBars.reduce((sum, item) => sum
       <GlowPanel title="履约节点" note="逾期会进告警中心">
         <BarChart :items="data.performanceBars" />
       </GlowPanel>
-      <GlowPanel title="合同名单" :note="`起草中 ${data.draftingContracts} 份`">
+      <GlowPanel title="合同名单" :note="`起草中 ${data.draftingContracts} 份，点名称打开中台`">
         <DataList :rows="data.contractRows" />
       </GlowPanel>
     </div>

@@ -308,6 +308,11 @@ function resetData() {
   background: linear-gradient(90deg, #1d39c4, #c6a15b 70%, #f3e6c8);
 }
 
+.header :deep(.ant-breadcrumb) {
+  min-width: 0;
+  overflow: hidden;
+}
+
 .header :deep(.ant-breadcrumb),
 .header :deep(.ant-breadcrumb a),
 .header :deep(.ant-breadcrumb-link),
@@ -425,6 +430,12 @@ function resetData() {
   .page-enter-from,
   .page-leave-to {
     transform: none;
+  }
+}
+
+@media (max-width: 1180px) {
+  .park {
+    display: none;
   }
 }
 

@@ -20,7 +20,7 @@ defineProps<{
   overflow: hidden;
   padding: 12px 14px 10px;
   border: 1px solid rgba(148, 196, 214, 0.2);
-  border-radius: 14px;
+  border-radius: 16px;
   background: linear-gradient(180deg, rgba(20, 40, 60, 0.72), rgba(8, 16, 28, 0.45));
   box-shadow: inset 0 0 18px rgba(45, 212, 191, 0.05);
 }

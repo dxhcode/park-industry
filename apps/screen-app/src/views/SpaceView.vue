@@ -32,7 +32,7 @@ const data = useSceneData()
         <BarChart :items="data.spaceBars" />
       </GlowPanel>
     </div>
-    <GlowPanel title="楼栋与厂房" note="在谈但没锁房的仍是可招商">
+    <GlowPanel title="楼栋与厂房" note="点名称打开中台空间。在谈但没锁房的仍是可招商">
       <DataList :rows="data.spaceRows" />
     </GlowPanel>
   </section>

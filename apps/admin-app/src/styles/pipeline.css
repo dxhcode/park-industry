@@ -21,11 +21,31 @@
 }
 
 .panel {
+  position: relative;
   padding: 8px 8px 4px;
   border: 1px solid var(--park-color-border);
   border-radius: 16px;
   background: var(--park-color-surface);
   box-shadow: 0 10px 28px rgba(14, 19, 32, 0.04);
+  overflow: hidden;
+}
+
+.panel::before,
+.block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 18px;
+  left: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(29, 57, 196, 0.55), rgba(198, 161, 91, 0.85), transparent);
+  pointer-events: none;
+}
+
+.panel :deep(.ant-table-thead > tr > th) {
+  color: #1a1d26;
+  font-weight: 600;
+  background: #f4f6fb !important;
 }
 
 .linkish {
@@ -51,11 +71,13 @@
 }
 
 .block {
+  position: relative;
   margin-top: 14px;
   padding: 18px 18px 8px;
   border: 1px solid var(--park-color-border);
   border-radius: 16px;
   background: #fff;
+  overflow: hidden;
 }
 
 .block h2,
@@ -88,10 +110,33 @@
 .jump-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: 8px;
   margin: 0 0 14px;
   padding: 0;
   list-style: none;
+}
+
+.jump-row a {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(14, 19, 32, 0.12);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.jump-row a:hover {
+  color: #0e1320;
+  border-color: #1d39c4;
+  background: #f4f6fb;
+}
+
+.jump-row a:focus-visible {
+  outline: 2px solid #c6a15b;
+  outline-offset: 2px;
 }
 
 .related li {

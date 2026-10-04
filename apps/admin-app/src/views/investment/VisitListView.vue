@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
+import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
@@ -26,6 +27,7 @@ const rows = computed(() =>
   }),
 )
 
+const filteredOut = computed(() => rows.value.length === 0 && store.visits.length > 0)
 const upcoming = computed(() => store.visits.filter((item) => item.status === '待进行').length)
 const notes = computed(() => store.visits.filter((item) => item.status === '待纪要').length)
 const done = computed(() => store.visits.filter((item) => item.status === '已完成').length)
@@ -43,10 +45,32 @@ const columns: TableColumnsType<Visit> = [
 
 const pagination = { pageSize: 8, showSizeChanger: false, showTotal: (total: number) => `共 ${total} 条` }
 
+function clearFilters() {
+  keyword.value = ''
+  status.value = ''
+  parkId.value = ''
+}
+
+function onEmptyPrimary() {
+  if (filteredOut.value) {
+    clearFilters()
+    return
+  }
+  void router.push('/investment/visits/new')
+}
+
 function linkLabel(item: Visit) {
-  if (item.projectId) return store.projectById(item.projectId)?.name ?? '项目'
-  if (item.leadId) return store.leadById(item.leadId)?.company ?? '线索'
+  if (item.projectId) return store.projectById(item.projectId)?.name ?? '项目已删除'
+  if (item.leadId) return store.leadById(item.leadId)?.company ?? '线索已删除'
   return '未关联'
+}
+
+function openLink(item: Visit) {
+  if (item.projectId) {
+    void router.push(`/investment/projects/${item.projectId}`)
+    return
+  }
+  if (item.leadId) void router.push(`/investment/leads/${item.leadId}`)
 }
 </script>
 
@@ -71,6 +95,16 @@ function linkLabel(item: Visit) {
     </div>
     <div class="panel">
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1080 }">
+        <template #emptyText>
+          <EmptyState
+            :title="filteredOut ? '没有符合条件的拜访' : '还没有拜访'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '登记时至少挂到一个项目或一条线索。'"
+            :primary="filteredOut ? '清空筛选' : '登记拜访'"
+            :secondary="filteredOut ? '登记拜访' : ''"
+            @primary-click="onEmptyPrimary"
+            @secondary-click="router.push('/investment/visits/new')"
+          />
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'title'">
             <button class="linkish" type="button" @click="router.push(`/investment/visits/${record.id}`)">{{ record.title }}</button>
@@ -78,7 +112,12 @@ function linkLabel(item: Visit) {
           <template v-else-if="column.key === 'kind'"><StatusTag :value="record.kind" /></template>
           <template v-else-if="column.key === 'status'"><StatusTag :value="record.status" /></template>
           <template v-else-if="column.key === 'park'">{{ parkShortName(record.parkId) }}</template>
-          <template v-else-if="column.key === 'link'">{{ linkLabel(record) }}</template>
+          <template v-else-if="column.key === 'link'">
+            <button v-if="record.projectId || record.leadId" class="linkish" type="button" @click="openLink(record)">
+              {{ linkLabel(record) }}
+            </button>
+            <span v-else>未关联</span>
+          </template>
         </template>
       </a-table>
     </div>

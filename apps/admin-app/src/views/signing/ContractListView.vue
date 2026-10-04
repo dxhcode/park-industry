@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
+import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
@@ -27,6 +28,7 @@ const rows = computed(() =>
   }),
 )
 
+const filteredOut = computed(() => rows.value.length === 0 && store.contracts.length > 0)
 const drafting = computed(() => store.contracts.filter((item) => item.status === '起草中').length)
 const pending = computed(() => store.contracts.filter((item) => item.status === '待签署').length)
 const active = computed(() => store.contracts.filter((item) => item.status === '已生效' || item.status === '履行中').length)
@@ -47,6 +49,20 @@ const pagination = {
   pageSize: 8,
   showSizeChanger: false,
   showTotal: (total: number) => `共 ${total} 条`,
+}
+
+function clearFilters() {
+  keyword.value = ''
+  status.value = ''
+  parkId.value = ''
+}
+
+function onEmptyPrimary() {
+  if (filteredOut.value) {
+    clearFilters()
+    return
+  }
+  void router.push('/signing/contracts/new')
 }
 
 function projectName(id: string) {
@@ -79,6 +95,16 @@ function openDetail(id: string) {
     </div>
     <div class="panel">
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1100 }">
+        <template #emptyText>
+          <EmptyState
+            :title="filteredOut ? '没有符合条件的合同' : '还没有合同'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '合同必须挂到一个招商项目。'"
+            :primary="filteredOut ? '清空筛选' : '新建合同'"
+            :secondary="filteredOut ? '新建合同' : ''"
+            @primary-click="onEmptyPrimary"
+            @secondary-click="router.push('/signing/contracts/new')"
+          />
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'title'">
             <button class="linkish" type="button" @click="openDetail(record.id)">{{ record.title }}</button>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import GlowPanel from '@/components/GlowPanel.vue'
 import MetricCard from '@/components/MetricCard.vue'
 import { useSceneData } from '@/composables/useSceneData'
 
@@ -26,15 +27,17 @@ function levelClass(level: string) {
       <MetricCard label="提示" :value="data.alertHint" hint="待签署和新线索" />
       <MetricCard label="告警条数" :value="data.alerts.length" hint="随左侧园区范围变化" />
     </div>
-    <div v-if="data.alerts.length" class="alert-list">
-      <article v-for="item in data.alerts" :key="item.id" class="alert-row">
-        <div>
-          <strong>{{ item.title }}</strong>
-          <span>{{ item.park }} · {{ item.detail }}</span>
-        </div>
-        <em class="level" :class="levelClass(item.level)">{{ item.level }}</em>
-      </article>
-    </div>
-    <p v-else class="scene-head scope">这个范围里没有需要盯的告警。</p>
+    <GlowPanel title="需要盯的事项" note="点一条回到中台对应档案">
+      <p v-if="!data.alerts.length" class="empty">这个范围里没有需要盯的告警。</p>
+      <div v-else class="alert-list">
+        <a v-for="item in data.alerts" :key="item.id" class="alert-row" :href="item.href">
+          <div>
+            <strong>{{ item.title }}</strong>
+            <span>{{ item.park }} · {{ item.detail }}</span>
+          </div>
+          <em class="level" :class="levelClass(item.level)">{{ item.level }}</em>
+        </a>
+      </div>
+    </GlowPanel>
   </section>
 </template>

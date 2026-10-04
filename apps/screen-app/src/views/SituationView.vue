@@ -37,7 +37,7 @@ const data = useSceneData()
         </GlowPanel>
       </div>
     </div>
-    <GlowPanel title="项目名单" note="名称与招商项目库一致">
+    <GlowPanel title="项目名单" note="点名称打开中台项目">
       <DataList :rows="data.projectRows" />
     </GlowPanel>
   </section>

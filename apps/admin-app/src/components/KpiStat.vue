@@ -20,7 +20,7 @@ defineProps<{
   overflow: hidden;
   padding: 16px 18px 14px;
   border: 1px solid var(--park-color-border);
-  border-radius: 14px;
+  border-radius: 16px;
   background: var(--park-color-surface);
   box-shadow: 0 10px 28px rgba(14, 19, 32, 0.04);
 }

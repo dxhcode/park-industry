@@ -34,7 +34,7 @@ const total = computed(() => data.enterpriseRows.length)
         <DonutChart :items="data.industryBars" :center="String(total)" />
       </GlowPanel>
     </div>
-    <GlowPanel title="企业名单" note="电话是虚构的，与档案一致">
+    <GlowPanel title="企业名单" note="点名称打开中台档案，电话是虚构的">
       <DataList :rows="data.enterpriseRows" />
     </GlowPanel>
   </section>

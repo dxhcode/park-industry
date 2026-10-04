@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
+import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
@@ -28,6 +29,7 @@ const rows = computed(() =>
   }),
 )
 
+const filteredOut = computed(() => rows.value.length === 0 && store.projects.length > 0)
 const talking = computed(() => store.projects.filter((item) => ['初洽', '尽调', '谈判'].includes(item.stage)).length)
 const signing = computed(() => store.projects.filter((item) => item.stage === '签约').length)
 const landed = computed(() => store.projects.filter((item) => item.stage === '落地').length)
@@ -51,6 +53,20 @@ const pagination = {
   pageSize: 8,
   showSizeChanger: false,
   showTotal: (total: number) => `共 ${total} 条`,
+}
+
+function clearFilters() {
+  keyword.value = ''
+  stage.value = ''
+  parkId.value = ''
+}
+
+function onEmptyPrimary() {
+  if (filteredOut.value) {
+    clearFilters()
+    return
+  }
+  void router.push('/investment/projects/new')
 }
 
 function openDetail(id: string) {
@@ -89,6 +105,16 @@ function recordId(record: InvestmentProject) {
         row-key="id"
         :scroll="{ x: 1100 }"
       >
+        <template #emptyText>
+          <EmptyState
+            :title="filteredOut ? '没有符合条件的项目' : '还没有招商项目'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '建档后可以继续登记拜访和起草合同。'"
+            :primary="filteredOut ? '清空筛选' : '新建项目'"
+            :secondary="filteredOut ? '新建项目' : ''"
+            @primary-click="onEmptyPrimary"
+            @secondary-click="router.push('/investment/projects/new')"
+          />
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
             <button class="linkish" type="button" @click="openDetail(recordId(record))">{{ record.name }}</button>

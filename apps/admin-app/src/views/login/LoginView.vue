@@ -160,11 +160,24 @@ li span {
 }
 
 .panel {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 48px 40px;
-  background: #f3f5fb;
+  background:
+    radial-gradient(420px 180px at 100% 0%, rgba(29, 57, 196, 0.08), transparent 60%),
+    #f3f5fb;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1d39c4, #c6a15b 70%, #f3e6c8);
 }
 
 h2 {

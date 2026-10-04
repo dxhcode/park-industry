@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
+import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
@@ -26,6 +27,7 @@ const rows = computed(() =>
   }),
 )
 
+const filteredOut = computed(() => rows.value.length === 0 && store.leads.length > 0)
 const fresh = computed(() => store.leads.filter((item) => item.status === '新线索').length)
 const following = computed(() => store.leads.filter((item) => item.status === '跟进中').length)
 const converted = computed(() => store.leads.filter((item) => item.status === '已转化').length)
@@ -43,6 +45,20 @@ const columns: TableColumnsType<Lead> = [
 ]
 
 const pagination = { pageSize: 8, showSizeChanger: false, showTotal: (total: number) => `共 ${total} 条` }
+
+function clearFilters() {
+  keyword.value = ''
+  status.value = ''
+  parkId.value = ''
+}
+
+function onEmptyPrimary() {
+  if (filteredOut.value) {
+    clearFilters()
+    return
+  }
+  void router.push('/investment/leads/new')
+}
 
 function projectLabel(id: string) {
   if (!id) return '未转化'
@@ -72,6 +88,16 @@ function projectLabel(id: string) {
     </div>
     <div class="panel">
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1080 }">
+        <template #emptyText>
+          <EmptyState
+            :title="filteredOut ? '没有符合条件的线索' : '还没有线索'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '登记后可以转化为项目，或先安排拜访。'"
+            :primary="filteredOut ? '清空筛选' : '登记线索'"
+            :secondary="filteredOut ? '登记线索' : ''"
+            @primary-click="onEmptyPrimary"
+            @secondary-click="router.push('/investment/leads/new')"
+          />
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'company'">
             <button class="linkish" type="button" @click="router.push(`/investment/leads/${record.id}`)">{{ record.company }}</button>

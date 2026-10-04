@@ -34,7 +34,7 @@ const total = computed(() => data.policyBars.reduce((sum, item) => sum + item.va
         <BarChart horizontal :items="data.policyMoney" />
       </GlowPanel>
     </div>
-    <GlowPanel title="申报名单" note="套数和折扣仍按原文显示">
+    <GlowPanel title="申报名单" note="点名称打开中台申报。套数和折扣仍按原文显示">
       <DataList :rows="data.policyRows" />
     </GlowPanel>
   </section>

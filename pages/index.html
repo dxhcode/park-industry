@@ -87,9 +87,23 @@
         backdrop-filter: blur(12px);
       }
 
-      a.card:hover {
+      a.card.admin {
+        border-color: rgba(198, 161, 91, 0.35);
+      }
+
+      a.card.admin .index {
+        color: #f3d7a6;
+      }
+
+      a.card:hover,
+      a.card.admin:hover {
         border-color: rgba(45, 212, 191, 0.7);
         box-shadow: 0 0 28px rgba(45, 212, 191, 0.14);
+      }
+
+      a.card.admin:hover {
+        border-color: rgba(232, 196, 138, 0.9);
+        box-shadow: 0 0 28px rgba(198, 161, 91, 0.18);
       }
 
       a.card:focus-visible {
@@ -142,7 +156,7 @@
         运营中台用演示账号登录，产业驾驶舱直接看三园招商、签约和告警。账号 chenqm、zhoulan、liucheng，密码 demo123。电话和金额都是虚构的。
       </p>
       <div class="cards">
-        <a class="card" href="admin/">
+        <a class="card admin" href="admin/">
           <div class="index">01 · 中台</div>
           <h2>运营中台</h2>
           <p>工作台、产业招商、签约、企业档案、空间、政策兑现与系统设置。</p>

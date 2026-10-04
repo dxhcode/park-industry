@@ -92,6 +92,8 @@ function onEmptyPrimary() {
       <li><router-link to="/investment/leads">线索</router-link></li>
       <li><router-link to="/investment/projects">项目库</router-link></li>
       <li><router-link to="/investment/visits">拜访</router-link></li>
+      <li><router-link to="/signing/contracts">合同</router-link></li>
+      <li><router-link to="/signing/performance">履约</router-link></li>
       <li><router-link to="/enterprises">企业档案</router-link></li>
       <li><router-link to="/space">产业空间</router-link></li>
       <li><router-link to="/policy">政策兑现</router-link></li>

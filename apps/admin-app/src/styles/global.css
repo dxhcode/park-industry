@@ -30,7 +30,10 @@ body,
 }
 
 body {
-  background: var(--park-color-bg);
+  background:
+    radial-gradient(920px 280px at 100% -80px, rgba(29, 57, 196, 0.08), transparent 58%),
+    radial-gradient(720px 240px at 0% -40px, rgba(198, 161, 91, 0.1), transparent 52%),
+    var(--park-color-bg);
 }
 
 button,

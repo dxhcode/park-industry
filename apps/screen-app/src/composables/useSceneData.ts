@@ -1,6 +1,7 @@
 import { computed, reactive } from 'vue'
 import { activeContractStatuses, contractStatuses, enterpriseStatuses, parkShort, parks, performanceStatuses, policyStatuses, projectSources, projectStages, spaceStatuses, type PerformanceRow, type PolicyRow } from '@/mock/ledger'
 import { countBars, formatArea, formatYi, parseWan, parseYi, shortCompany, tone, type BarItem } from '@/mock/format'
+import { adminHref } from '@/nav/adminLink'
 import { useCockpitStore } from '@/stores/cockpit'
 import { useLedgerStore } from '@/stores/ledger'
 
@@ -10,6 +11,7 @@ export interface ListRow {
   meta: string
   value: string
   tone?: string
+  href?: string
 }
 
 export interface MapNode {
@@ -40,9 +42,15 @@ export interface AlertItem {
   title: string
   detail: string
   park: string
+  href: string
 }
 
 const talkingStages = new Set(['初洽', '尽调', '谈判'])
+const cityPalette = ['#38bdf8', '#2dd4bf', '#f3d7a6', '#c4b5fd', '#86efac', '#fb7185', '#67e8f9']
+
+function desk(path: string) {
+  return adminHref(path)
+}
 
 function inPark<T extends { parkId: string }>(rows: readonly T[], parkId: string): T[] {
   if (parkId === 'all') return [...rows]
@@ -97,10 +105,11 @@ export function useSceneData() {
     return cities
       .map((label) => ({
         label: label.replace(/市$/, ''),
-        value: projects.value.filter((item) => item.fromCity === label).length,
+        value: projects.value.filter((item) => (item.fromCity || '未填城市') === label).length,
         color: '#38bdf8',
       }))
       .sort((a, b) => b.value - a.value)
+      .map((item, index) => ({ ...item, color: cityPalette[index % cityPalette.length] }))
   })
 
   const mapNodes = computed<MapNode[]>(() =>
@@ -133,6 +142,7 @@ export function useSceneData() {
     meta: `${parkShort(item.parkId)} · ${item.industry} · ${item.owner}`,
     value: item.stage,
     tone: item.stage,
+    href: desk(`/investment/projects/${item.id}`),
   })))
 
   const contractBars = computed(() => countBars(contractStatuses, contracts.value, 'status'))
@@ -142,6 +152,7 @@ export function useSceneData() {
     meta: `${shortCompany(item.partyB)} · ${item.kind} · ${item.owner}`,
     value: item.amount,
     tone: item.status,
+    href: desk(`/signing/contracts/${item.id}`),
   })))
   const pendingContracts = computed(() => contracts.value.filter((item) => item.status === '待签署').length)
   const draftingContracts = computed(() => contracts.value.filter((item) => item.status === '起草中').length)
@@ -158,6 +169,7 @@ export function useSceneData() {
     meta: `${parkShort(item.parkId)} · ${item.location || item.industry} · ${item.phone || '无电话'}`,
     value: item.status,
     tone: item.status,
+    href: desk(`/enterprises/${item.id}`),
   })))
   const enterpriseIn = computed(() => enterprises.value.filter((item) => item.status === '在园' || item.status === '重点').length)
   const enterpriseKey = computed(() => enterprises.value.filter((item) => item.status === '重点').length)
@@ -177,6 +189,7 @@ export function useSceneData() {
     meta: `${parkShort(item.parkId)} · ${item.building} · ${item.tenant || '未入住'}`,
     value: item.kind === '配套' ? '配套' : formatArea(item.areaSqm),
     tone: item.status,
+    href: desk(`/space/${item.id}`),
   })))
   const parkStacks = computed<StackRow[]>(() => {
     const scope = parkId.value === 'all' ? parks : parks.filter((item) => item.id === parkId.value)
@@ -205,6 +218,7 @@ export function useSceneData() {
     meta: `${shortCompany(item.enterpriseName)} · ${item.policyName} · ${item.owner}`,
     value: item.amount,
     tone: item.status,
+    href: desk(`/policy/${item.id}`),
   })))
   const policyApplying = computed(() => policies.value.filter((item) => item.status === '申报中').length)
   const policyReview = computed(() => policies.value.filter((item) => item.status === '审核中').length)
@@ -222,6 +236,7 @@ export function useSceneData() {
         title: `${space.name}空置`,
         detail: `${formatArea(space.areaSqm)} · ${space.building}`,
         park: parkShort(space.parkId),
+        href: desk(`/space/${space.id}`),
       })
     }
     for (const policy of policies.value) {
@@ -236,6 +251,7 @@ export function useSceneData() {
         title: contract.title,
         detail: `${shortCompany(contract.partyB)} · ${contract.amount} · 待签署`,
         park: parkShort(contract.parkId),
+        href: desk(`/signing/contracts/${contract.id}`),
       })
     }
     for (const lead of leads.value) {
@@ -246,6 +262,7 @@ export function useSceneData() {
         title: lead.company,
         detail: `${lead.industry} · ${lead.phone}`,
         park: parkShort(lead.parkId),
+        href: desk(`/investment/leads/${lead.id}`),
       })
     }
     const rank = { 紧急: 0, 重要: 1, 提示: 2 }
@@ -334,6 +351,7 @@ function performanceAlert(node: PerformanceRow & { contract: { title: string; pa
     title: node.name,
     detail: `${node.contract.title} · ${node.dueAt} · ${node.metric}`,
     park: parkShort(node.contract.parkId),
+    href: desk(`/signing/performance/${node.id}`),
   }]
 }
 
@@ -344,5 +362,6 @@ function policyAlert(policy: PolicyRow): AlertItem {
     title: policy.title,
     detail: `${shortCompany(policy.enterpriseName)} · ${policy.amount} · 材料退回`,
     park: parkShort(policy.parkId),
+    href: desk(`/policy/${policy.id}`),
   }
 }

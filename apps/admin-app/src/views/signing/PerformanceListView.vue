@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
+import EmptyState from '@/components/EmptyState.vue'
 import KpiStat from '@/components/KpiStat.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
@@ -24,6 +25,7 @@ const rows = computed(() =>
   }),
 )
 
+const filteredOut = computed(() => rows.value.length === 0 && store.performances.length > 0)
 const normal = computed(() => store.performances.filter((item) => item.status === '正常履约').length)
 const soon = computed(() => store.performances.filter((item) => item.status === '即将到期').length)
 const late = computed(() => store.performances.filter((item) => item.status === '逾期').length)
@@ -40,6 +42,19 @@ const columns: TableColumnsType<PerformanceNode> = [
 ]
 
 const pagination = { pageSize: 8, showSizeChanger: false, showTotal: (total: number) => `共 ${total} 条` }
+
+function clearFilters() {
+  keyword.value = ''
+  status.value = ''
+}
+
+function onEmptyPrimary() {
+  if (filteredOut.value) {
+    clearFilters()
+    return
+  }
+  void router.push('/signing/performance/new')
+}
 
 function contractLabel(id: string) {
   const contract = store.contractById(id)
@@ -67,6 +82,16 @@ function contractLabel(id: string) {
     </div>
     <div class="panel">
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 980 }">
+        <template #emptyText>
+          <EmptyState
+            :title="filteredOut ? '没有符合条件的节点' : '还没有履约节点'"
+            :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '节点挂在合同上，逾期会进驾驶舱告警。'"
+            :primary="filteredOut ? '清空筛选' : '登记节点'"
+            :secondary="filteredOut ? '登记节点' : ''"
+            @primary-click="onEmptyPrimary"
+            @secondary-click="router.push('/signing/performance/new')"
+          />
+        </template>
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'name'">
             <button class="linkish" type="button" @click="router.push(`/signing/performance/${record.id}`)">{{ record.name }}</button>
