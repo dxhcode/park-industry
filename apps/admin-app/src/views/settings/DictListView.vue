@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import SettingsNav from '@/components/SettingsNav.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
@@ -74,12 +73,13 @@ function onEmptyPrimary() {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 820 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的字典' : '还没有字典'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '先加一条产业分类或空间状态。'"
-            :primary="filteredOut ? '清空筛选' : '新建字典'"
-            :secondary="filteredOut ? '新建字典' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/settings/dicts/new')"
+            :primary-text="filteredOut ? '清空筛选' : '新建字典'"
+            :secondary-text="filteredOut ? '新建字典' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/settings/dicts/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState, KpiStat } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import KpiStat from '@/components/KpiStat.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { formatArea, includesKeyword } from '@/mock/helpers'
@@ -88,12 +86,13 @@ function onEmptyPrimary() {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1040 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的空间' : '还没有空间资源'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '先把楼层或厂房记下来，再标可招商还是在租。'"
-            :primary="filteredOut ? '清空筛选' : '新建资源'"
-            :secondary="filteredOut ? '新建资源' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/space/new')"
+            :primary-text="filteredOut ? '清空筛选' : '新建资源'"
+            :secondary-text="filteredOut ? '新建资源' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/space/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

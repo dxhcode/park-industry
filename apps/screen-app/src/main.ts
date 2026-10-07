@@ -5,10 +5,15 @@ import Tag from 'ant-design-vue/es/tag'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import 'ant-design-vue/dist/reset.css'
+import { applyParkTheme } from '@park/theme'
+import '@park/theme/theme.css'
+import '@park/components/style.css'
 import App from './App.vue'
 import router from './router'
 import './styles/global.css'
 import './styles/scene.css'
+
+applyParkTheme('screen')
 
 dayjs.locale('zh-cn')
 

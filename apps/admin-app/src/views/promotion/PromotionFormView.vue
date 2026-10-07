@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { PageHeader } from '@park/components'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import MissingBlock from '@/components/MissingBlock.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import { dateModel } from '@/composables/dateModel'
 import { eventKinds, eventStatuses, parkOptions, toOptions } from '@/mock/options'
 import type { EventDraft, EventKind, EventStatus } from '@/mock/ops-types'

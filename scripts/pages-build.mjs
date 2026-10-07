@@ -55,6 +55,7 @@ const fallbackHtml = `<!doctype html>
 `
 
 await rm(dist, { recursive: true, force: true })
+run('node', ['scripts/build-shared.mjs'])
 run('pnpm', ['--filter', 'admin-app', 'build'])
 run('pnpm', ['--filter', 'screen-app', 'build'])
 

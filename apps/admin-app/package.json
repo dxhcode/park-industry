@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^7.0.1",
+    "@park/components": "workspace:*",
+    "@park/mock": "workspace:*",
+    "@park/theme": "workspace:*",
     "ant-design-vue": "^4.2.6",
     "dayjs": "^1.11.18",
     "pinia": "^4.0.3",

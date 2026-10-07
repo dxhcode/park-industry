@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import SettingsNav from '@/components/SettingsNav.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
@@ -71,12 +70,13 @@ function onEmptyPrimary() {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 920 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的组织' : '还没有组织'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '先记下运营公司和部门。'"
-            :primary="filteredOut ? '清空筛选' : '新建组织'"
-            :secondary="filteredOut ? '新建组织' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/settings/orgs/new')"
+            :primary-text="filteredOut ? '清空筛选' : '新建组织'"
+            :secondary-text="filteredOut ? '新建组织' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/settings/orgs/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

@@ -1,0 +1,3 @@
+[submodule "vendor/park-shared"]
+	path = vendor/park-shared
+	url = https://github.com/dxhcode/park-shared.git

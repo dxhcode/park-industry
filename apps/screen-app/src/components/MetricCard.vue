@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { KpiStat } from '@park/components'
+
 defineProps<{
   label: string
   value: string | number
@@ -8,9 +10,7 @@ defineProps<{
 
 <template>
   <article class="metric-card">
-    <span>{{ label }}</span>
-    <strong>{{ value }}</strong>
-    <em>{{ hint }}</em>
+    <KpiStat :label="label" :value="value" :hint="hint" />
   </article>
 </template>
 
@@ -18,11 +18,11 @@ defineProps<{
 .metric-card {
   position: relative;
   overflow: hidden;
-  padding: 12px 14px 10px;
-  border: 1px solid rgba(148, 196, 214, 0.2);
+  padding: 12px 14px 10px 16px;
+  border: 1px solid var(--park-glass-border);
   border-radius: 16px;
-  background: linear-gradient(180deg, rgba(20, 40, 60, 0.72), rgba(8, 16, 28, 0.45));
-  box-shadow: inset 0 0 18px rgba(45, 212, 191, 0.05);
+  background: var(--park-glass-bg);
+  box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.05);
 }
 
 .metric-card::before {
@@ -32,42 +32,16 @@ defineProps<{
   bottom: 0;
   left: 0;
   width: 2px;
-  background: linear-gradient(#2dd4bf, #38bdf8);
-  box-shadow: 0 0 10px rgba(45, 212, 191, 0.8);
+  background: linear-gradient(var(--park-color-primary), var(--park-color-accent));
+  box-shadow: 0 0 10px var(--park-color-glow);
 }
 
-span,
-em {
-  color: #93a8bd;
-  font-size: 12px;
-  font-style: normal;
-}
-
-strong {
-  display: block;
-  margin: 6px 0 4px;
-  color: #e9fffb;
+.metric-card :deep(.park-kpi__value) {
   font-size: 26px;
-  font-weight: 620;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 16px rgba(45, 212, 191, 0.45);
-  animation: glowpulse 3.6s ease-in-out infinite;
 }
 
-@keyframes glowpulse {
-  0%,
-  100% {
-    text-shadow: 0 0 12px rgba(45, 212, 191, 0.28);
-  }
-  50% {
-    text-shadow: 0 0 18px rgba(125, 211, 252, 0.7);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  strong {
-    animation: none;
-  }
+.metric-card :deep(.park-kpi__label),
+.metric-card :deep(.park-kpi__hint) {
+  letter-spacing: 0.04em;
 }
 </style>

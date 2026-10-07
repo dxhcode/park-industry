@@ -25,7 +25,7 @@ const data = useSceneData()
       <MetricCard label="线索转化率" :value="data.conversionText" hint="不含无效线索" />
     </div>
     <div class="board">
-      <GlowPanel title="投资地理" note="滨江云栖、临港智造、光谷生命">
+      <GlowPanel title="投资地理" note="云栖科创、临港智造、光谷生命">
         <ParkMap :nodes="data.mapNodes" @select="data.selectPark" />
       </GlowPanel>
       <div class="stack">

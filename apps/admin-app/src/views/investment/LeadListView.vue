@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState, KpiStat } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import KpiStat from '@/components/KpiStat.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
@@ -90,12 +88,13 @@ function projectLabel(id: string) {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1080 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的线索' : '还没有线索'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '登记后可以转化为项目，或先安排拜访。'"
-            :primary="filteredOut ? '清空筛选' : '登记线索'"
-            :secondary="filteredOut ? '登记线索' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/investment/leads/new')"
+            :primary-text="filteredOut ? '清空筛选' : '登记线索'"
+            :secondary-text="filteredOut ? '登记线索' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/investment/leads/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { PageHeader } from '@park/components'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
-import PageHeader from '@/components/PageHeader.vue'
 import { contractKinds, contractStatuses, parkOptions, toOptions } from '@/mock/options'
 import { findPark } from '@/mock/parks'
 import type { ContractKind, ContractStatus } from '@/mock/types'
