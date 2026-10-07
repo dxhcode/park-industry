@@ -32,7 +32,7 @@ Pages 要能打开，仓库 Settings → Pages 必须选 Branch `dist`、目录 
 
 1. 打开 https://dxhcode.github.io/park-industry/ 。
 2. 左边金色卡片是运营中台，右边青色卡片是产业驾驶舱。先点「进入中台」。
-3. 落到 https://dxhcode.github.io/park-industry/admin/login 。
+3. 落到 https://dxhcode.github.io/park-industry/admin/login 。登录页是共享库的深色入口，右侧仍是三个演示账号。
 4. 点「陈启明」，再点「进入运营中台」。
 
 应当看到墨色顶栏和侧栏，工作台四张数字：待跟进线索、在谈项目、待进行拜访、未完成待办。下面一排圆角入口里有线索、项目库、拜访、合同、履约。

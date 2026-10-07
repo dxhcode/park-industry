@@ -1,14 +1,6 @@
 :root {
-  --park-navy: #0e1320;
-  --park-gold: #c6a15b;
-  --park-gold-soft: #f3d7a6;
-  --park-teal: #2dd4bf;
-  --park-sky: #38bdf8;
-  color: #e7f3ff;
-  background: #070b12;
-  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei',
-    sans-serif;
-  color-scheme: dark;
+  --park-font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Noto Sans CJK SC',
+    'Microsoft YaHei', sans-serif;
 }
 
 * {
@@ -22,8 +14,11 @@ body,
   height: 100%;
 }
 
+html[data-park-theme='screen'],
 body {
   background: #070b12;
+  color: #e7f3ff;
+  font-family: var(--park-font-family);
 }
 
 button,

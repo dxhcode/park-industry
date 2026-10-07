@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState, KpiStat } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import KpiStat from '@/components/KpiStat.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
 import { screenHref } from '@/nav/screenLink'
 import StatusTag from '@/components/StatusTag.vue'
@@ -110,12 +108,13 @@ function onEmptyPrimary() {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 980 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的待办' : '还没有待办'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '把要跟的线索、拜访和审阅记在这里。'"
-            :primary="filteredOut ? '清空筛选' : '新建待办'"
-            :secondary="filteredOut ? '新建待办' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/workbench/tasks/new')"
+            :primary-text="filteredOut ? '清空筛选' : '新建待办'"
+            :secondary-text="filteredOut ? '新建待办' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/workbench/tasks/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { PageHeader } from '@park/components'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import MissingBlock from '@/components/MissingBlock.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import SettingsNav from '@/components/SettingsNav.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { usePageTitle } from '@/composables/usePageTitle'

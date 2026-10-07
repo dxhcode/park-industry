@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import theme from 'ant-design-vue/es/theme'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import { screenAntdTheme } from '@park/theme'
 import Ticker from '@/components/Ticker.vue'
 import { scenes } from '@/config/scenes'
 import { parks } from '@/mock/ledger'
@@ -15,18 +15,6 @@ const cockpit = useCockpitStore()
 const ledger = useLedgerStore()
 const sceneData = useSceneData()
 const route = useRoute()
-
-const themeConfig = {
-  algorithm: theme.darkAlgorithm,
-  token: {
-    colorPrimary: '#2dd4bf',
-    colorInfo: '#38bdf8',
-    colorBgBase: '#070b12',
-    borderRadius: 10,
-    fontFamily:
-      '"PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif',
-  },
-}
 
 const iso = computed(() => cockpit.now.toISOString())
 const backHref = computed(() => adminHref(route.query.from))
@@ -47,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <a-config-provider :locale="zhCN" :theme="themeConfig">
+  <a-config-provider :locale="zhCN" :theme="screenAntdTheme">
     <div class="cockpit">
       <div class="atmosphere" aria-hidden="true">
         <div class="grid" />

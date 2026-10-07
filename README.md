@@ -11,10 +11,21 @@
 
 - Node.js `>= 22.12`
 - pnpm `10`
+- 能访问 GitHub，用来拉取子模块 [park-shared](https://github.com/dxhcode/park-shared)
 
 ```bash
 pnpm install
 ```
+
+`pnpm install` 一开始会加载 `.pnpmfile.cjs`。如果 `vendor/park-shared` 还是空的，它会执行 `git submodule update --init`，然后再解析 workspace。根目录的 `preinstall` 会再检查一次。普通克隆不用额外加 `--recurse-submodules`。共享包进了 pnpm workspace，版本由子模块提交钉住。安装时三个包自己的 `prepare` 会产出 `dist`。
+
+两个应用依赖：
+
+- `@park/theme`：管理端和大屏的 CSS 变量、ant-design-vue 主题
+- `@park/components`：页头、指标、空态、登录壳、路由动效，以及驾驶舱的玻璃面板和滚动指标
+- `@park/mock`：三园主数据、企业全称和楼宇名称
+
+产业自己的招商签约台账、三个演示账号（`chenqm` / `zhoulan` / `liucheng`，密码 `demo123`）仍留在本仓库。`@park/mock` 里的 `admin` / `operator` 是共享库预览账号，这里不使用。
 
 ## 本地开发
 
@@ -71,7 +82,7 @@ Vite `base` 分别为 `/park-industry/admin/` 和 `/park-industry/screen/`，与
 
 ## 产业驾驶舱
 
-六张场景都有数字：招商态势、签约看板、企业分布、空间利用、政策兑现、告警中心。底图是示意，不是测绘。名称与招商签约样例对齐，用滨江云栖科创园、临港智造产业园、光谷生命科学园。电话和金额都是虚构的。
+六张场景都有数字：招商态势、签约看板、企业分布、空间利用、政策兑现、告警中心。玻璃面板和顶栏滚动指标来自 `@park/components`，主题色来自 `@park/theme`。地图、柱状图和环形图仍留在本仓库：上面要标在谈项目数、签约额和来源城市，共享图表壳盖不住这些字段。底图是示意，不是测绘。园区名称从 `@park/mock` 读取。电话和金额都是虚构的。
 
 左侧可以换场景，也可以把范围收成单个园区。顶栏有滚动指标。点地图上的园区，图表跟着收窄；再点一次回到三园合计。
 
@@ -110,7 +121,7 @@ pnpm typecheck
 pnpm pages:build
 ```
 
-`pnpm build` 分别产出 `apps/admin-app/dist` 和 `apps/screen-app/dist`。
+`pnpm build` 先编译 `@park/theme`、`@park/mock`、`@park/components`，再产出 `apps/admin-app/dist` 和 `apps/screen-app/dist`。
 
 `pnpm pages:build` 生成可放到 GitHub Pages 的聚合目录：
 

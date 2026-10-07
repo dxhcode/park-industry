@@ -1,4 +1,6 @@
+import { getById, mapMarkers, parks as sharedParks } from '@park/mock'
 import { shortCompany } from '@/mock/format'
+import { buildingName, masterName } from '@/mock/master'
 
 /** 与运营中台招商签约、企业、空间、政策样例同名。电话和金额均为虚构。 */
 
@@ -117,44 +119,25 @@ export interface Bundle {
   opsOrigin: 'local' | 'seed'
 }
 
-export const parks: ParkNode[] = [
-  {
-    id: 'park-guanggu',
-    name: '光谷生命科学园',
-    shortName: '光谷生命',
-    city: '武汉',
-    x: 198,
-    y: 262,
-    labelX: 176,
-    labelY: 236,
-    anchor: 'end',
-    color: '#c4b5fd',
-  },
-  {
-    id: 'park-binjiang',
-    name: '滨江云栖科创园',
-    shortName: '滨江云栖',
-    city: '杭州',
-    x: 512,
-    y: 248,
-    labelX: 512,
-    labelY: 292,
-    anchor: 'middle',
-    color: '#38bdf8',
-  },
-  {
-    id: 'park-lingang',
-    name: '临港智造产业园',
-    shortName: '临港智造',
-    city: '上海',
-    x: 568,
-    y: 168,
-    labelX: 592,
-    labelY: 158,
-    anchor: 'start',
-    color: '#2dd4bf',
-  },
-]
+const parkFrame: Record<string, Pick<ParkNode, 'x' | 'y' | 'labelX' | 'labelY' | 'anchor' | 'color'>> = {
+  'park-guanggu': { x: 198, y: 262, labelX: 176, labelY: 236, anchor: 'end', color: '#c4b5fd' },
+  'park-binjiang': { x: 512, y: 248, labelX: 512, labelY: 292, anchor: 'middle', color: '#38bdf8' },
+  'park-lingang': { x: 568, y: 168, labelX: 592, labelY: 158, anchor: 'start', color: '#2dd4bf' },
+}
+
+/** 名称来自 @park/mock。坐标只服务这张示意底图。 */
+export const parks: ParkNode[] = mapMarkers.map((marker) => {
+  const shared = getById(sharedParks, marker.parkId)
+  const frame = shared ? parkFrame[shared.id] : undefined
+  if (!shared || !frame) throw new Error(`@park/mock 园区无法放到驾驶舱地图：${marker.parkId}`)
+  return {
+    id: shared.id,
+    name: shared.name,
+    shortName: shared.shortName,
+    city: marker.city,
+    ...frame,
+  }
+})
 
 export const projectStages = ['线索', '初洽', '尽调', '谈判', '签约', '落地', '搁置'] as const
 export const projectSources = ['推介会', '渠道推荐', '主动咨询', '政府转介', '以商招商'] as const
@@ -169,24 +152,24 @@ const PIPELINE_KEY = 'park-industry.pipeline.v1'
 const OPS_KEY = 'park-industry.ops.v1'
 
 const seedProjects: ProjectRow[] = [
-  { id: 'proj-xinglan-ii', name: '星澜智造二期扩产', parkId: 'park-binjiang', enterpriseName: '星澜智造科技有限公司', industry: '人工智能', stage: '谈判', source: '以商招商', intentAreaSqm: 8600, intentInvestment: '1.6 亿元', owner: '陈启明', fromCity: '杭州市', phone: '0571-86001101' },
-  { id: 'proj-qinghe', name: '青禾抗体中试平台', parkId: 'park-binjiang', enterpriseName: '青禾生物医药有限公司', industry: '生物医药', stage: '尽调', source: '政府转介', intentAreaSqm: 4200, intentInvestment: '8000 万元', owner: '苏晚', fromCity: '杭州市', phone: '0571-86001102' },
-  { id: 'proj-luanshu', name: '峦数数据服务中心', parkId: 'park-binjiang', enterpriseName: '峦数信息技术有限公司', industry: '软件信息', stage: '初洽', source: '主动咨询', intentAreaSqm: 1200, intentInvestment: '1500 万元', owner: '苏晚', fromCity: '杭州市', phone: '0571-86001103' },
-  { id: 'proj-haiyi', name: '海弈精密减速器项目', parkId: 'park-lingang', enterpriseName: '海弈装备股份有限公司', industry: '高端装备', stage: '签约', source: '渠道推荐', intentAreaSqm: 18000, intentInvestment: '3.2 亿元', owner: '周岚', fromCity: '上海市', phone: '021-58002101' },
-  { id: 'proj-yuanneng', name: '远能储能 PACK 产线', parkId: 'park-lingang', enterpriseName: '远能动力科技有限公司', industry: '新能源', stage: '落地', source: '推介会', intentAreaSqm: 9600, intentInvestment: '1.1 亿元', owner: '周岚', fromCity: '上海市', phone: '021-58002102' },
-  { id: 'proj-jinfan', name: '锦帆智慧仓回流评估', parkId: 'park-lingang', enterpriseName: '锦帆物流科技有限公司', industry: '供应链', stage: '搁置', source: '渠道推荐', intentAreaSqm: 6400, intentInvestment: '4000 万元', owner: '江衡', fromCity: '苏州市', phone: '021-58002103' },
-  { id: 'proj-qiming', name: '启明手术机器人组装', parkId: 'park-guanggu', enterpriseName: '启明医疗器械有限公司', industry: '医疗器械', stage: '谈判', source: '政府转介', intentAreaSqm: 7200, intentInvestment: '1.4 亿元', owner: '刘澄', fromCity: '武汉市', phone: '027-87003101' },
-  { id: 'proj-baiyu', name: '白屿合成生物中试', parkId: 'park-guanggu', enterpriseName: '白屿合成生物有限公司', industry: '合成生物', stage: '初洽', source: '推介会', intentAreaSqm: 5100, intentInvestment: '6000 万元', owner: '何安', fromCity: '武汉市', phone: '027-87003102' },
+  { id: 'proj-xinglan-ii', name: '星澜智造二期扩产', parkId: 'park-binjiang', enterpriseName: masterName('ent-xinglan'), industry: '人工智能', stage: '谈判', source: '以商招商', intentAreaSqm: 8600, intentInvestment: '1.6 亿元', owner: '陈启明', fromCity: '杭州市', phone: '0571-86001101' },
+  { id: 'proj-qinghe', name: '青禾抗体中试平台', parkId: 'park-binjiang', enterpriseName: masterName('ent-qinghe'), industry: '生物医药', stage: '尽调', source: '政府转介', intentAreaSqm: 4200, intentInvestment: '8000 万元', owner: '苏晚', fromCity: '杭州市', phone: '0571-86001102' },
+  { id: 'proj-luanshu', name: '峦数数据服务中心', parkId: 'park-binjiang', enterpriseName: masterName('ent-luanshu'), industry: '软件信息', stage: '初洽', source: '主动咨询', intentAreaSqm: 1200, intentInvestment: '1500 万元', owner: '苏晚', fromCity: '杭州市', phone: '0571-86001103' },
+  { id: 'proj-haiyi', name: '海弈精密减速器项目', parkId: 'park-lingang', enterpriseName: masterName('ent-haiyi'), industry: '高端装备', stage: '签约', source: '渠道推荐', intentAreaSqm: 18000, intentInvestment: '3.2 亿元', owner: '周岚', fromCity: '上海市', phone: '021-58002101' },
+  { id: 'proj-yuanneng', name: '远能储能 PACK 产线', parkId: 'park-lingang', enterpriseName: masterName('ent-yuanneng'), industry: '新能源', stage: '落地', source: '推介会', intentAreaSqm: 9600, intentInvestment: '1.1 亿元', owner: '周岚', fromCity: '上海市', phone: '021-58002102' },
+  { id: 'proj-jinfan', name: '锦帆智慧仓回流评估', parkId: 'park-lingang', enterpriseName: masterName('ent-jinfan'), industry: '供应链', stage: '搁置', source: '渠道推荐', intentAreaSqm: 6400, intentInvestment: '4000 万元', owner: '江衡', fromCity: '苏州市', phone: '021-58002103' },
+  { id: 'proj-qiming', name: '启明手术机器人组装', parkId: 'park-guanggu', enterpriseName: masterName('ent-qiming'), industry: '医疗器械', stage: '谈判', source: '政府转介', intentAreaSqm: 7200, intentInvestment: '1.4 亿元', owner: '刘澄', fromCity: '武汉市', phone: '027-87003101' },
+  { id: 'proj-baiyu', name: '白屿合成生物中试', parkId: 'park-guanggu', enterpriseName: masterName('ent-baiyu'), industry: '合成生物', stage: '初洽', source: '推介会', intentAreaSqm: 5100, intentInvestment: '6000 万元', owner: '何安', fromCity: '武汉市', phone: '027-87003102' },
   { id: 'proj-chengxin', name: '澄芯光电先进封装', parkId: 'park-binjiang', enterpriseName: '澄芯光电科技有限公司', industry: '集成电路', stage: '线索', source: '主动咨询', intentAreaSqm: 3000, intentInvestment: '9000 万元', owner: '陈启明', fromCity: '嘉兴市', phone: '0571-86001409' },
   { id: 'proj-lanwan', name: '岚湾氢能测试中心', parkId: 'park-lingang', enterpriseName: '岚湾氢能科技有限公司', industry: '新能源', stage: '尽调', source: '政府转介', intentAreaSqm: 4500, intentInvestment: '7000 万元', owner: '江衡', fromCity: '宁波市', phone: '021-58002410' },
 ]
 
 const seedContracts: ContractRow[] = [
-  { id: 'con-haiyi', title: '海弈精密减速器投资协议', kind: '投资协议', status: '已生效', parkId: 'park-lingang', partyB: '海弈装备股份有限公司', amount: '3.2 亿元', owner: '周岚' },
-  { id: 'con-yuanneng', title: '远能储能 PACK 厂房租赁合同', kind: '租赁合同', status: '履行中', parkId: 'park-lingang', partyB: '远能动力科技有限公司', amount: '1.1 亿元', owner: '周岚' },
-  { id: 'con-xinglan', title: '星澜智造二期补充协议', kind: '补充协议', status: '待签署', parkId: 'park-binjiang', partyB: '星澜智造科技有限公司', amount: '1.6 亿元', owner: '陈启明' },
-  { id: 'con-qiming', title: '启明手术机器人投资协议', kind: '投资协议', status: '起草中', parkId: 'park-guanggu', partyB: '启明医疗器械有限公司', amount: '1.4 亿元', owner: '刘澄' },
-  { id: 'con-qinghe', title: '青禾抗体中试租赁合同', kind: '租赁合同', status: '起草中', parkId: 'park-binjiang', partyB: '青禾生物医药有限公司', amount: '8000 万元', owner: '苏晚' },
+  { id: 'con-haiyi', title: '海弈精密减速器投资协议', kind: '投资协议', status: '已生效', parkId: 'park-lingang', partyB: masterName('ent-haiyi'), amount: '3.2 亿元', owner: '周岚' },
+  { id: 'con-yuanneng', title: '远能储能 PACK 厂房租赁合同', kind: '租赁合同', status: '履行中', parkId: 'park-lingang', partyB: masterName('ent-yuanneng'), amount: '1.1 亿元', owner: '周岚' },
+  { id: 'con-xinglan', title: '星澜智造二期补充协议', kind: '补充协议', status: '待签署', parkId: 'park-binjiang', partyB: masterName('ent-xinglan'), amount: '1.6 亿元', owner: '陈启明' },
+  { id: 'con-qiming', title: '启明手术机器人投资协议', kind: '投资协议', status: '起草中', parkId: 'park-guanggu', partyB: masterName('ent-qiming'), amount: '1.4 亿元', owner: '刘澄' },
+  { id: 'con-qinghe', title: '青禾抗体中试租赁合同', kind: '租赁合同', status: '起草中', parkId: 'park-binjiang', partyB: masterName('ent-qinghe'), amount: '8000 万元', owner: '苏晚' },
 ]
 
 const seedLeads: LeadRow[] = [
@@ -217,35 +200,35 @@ const seedPerformances: PerformanceRow[] = [
 ]
 
 const seedEnterprises: EnterpriseRow[] = [
-  { id: 'ent-xinglan', name: '星澜智造科技有限公司', parkId: 'park-binjiang', industry: '人工智能', status: '重点', phone: '0571-86001101', areaSqm: 6200, location: 'A1 研发楼东侧' },
-  { id: 'ent-qinghe', name: '青禾生物医药有限公司', parkId: 'park-binjiang', industry: '生物医药', status: '待完善', phone: '0571-86001102', areaSqm: 4200, location: '意向 B2 实验楼 4-5 层' },
-  { id: 'ent-luanshu', name: '峦数信息技术有限公司', parkId: 'park-binjiang', industry: '软件信息', status: '待完善', phone: '0571-86001103', areaSqm: 1200, location: '意向 A1 研发楼 8 层' },
-  { id: 'ent-haiyi', name: '海弈装备股份有限公司', parkId: 'park-lingang', industry: '高端装备', status: '重点', phone: '021-58002101', areaSqm: 18000, location: 'M1 智能厂房北跨' },
-  { id: 'ent-yuanneng', name: '远能动力科技有限公司', parkId: 'park-lingang', industry: '新能源', status: '在园', phone: '021-58002102', areaSqm: 9600, location: 'M1 智能厂房南跨' },
-  { id: 'ent-jinfan', name: '锦帆物流科技有限公司', parkId: 'park-lingang', industry: '供应链', status: '已迁出', phone: '021-58002103', areaSqm: 0, location: '原 M3 仓储，已退租' },
-  { id: 'ent-qiming', name: '启明医疗器械有限公司', parkId: 'park-guanggu', industry: '医疗器械', status: '待完善', phone: '027-87003101', areaSqm: 7200, location: '意向 C1 研发中心低区' },
-  { id: 'ent-baiyu', name: '白屿合成生物有限公司', parkId: 'park-guanggu', industry: '合成生物', status: '待完善', phone: '027-87003102', areaSqm: 5100, location: '意向 C2 中试楼' },
+  { id: 'ent-xinglan', name: masterName('ent-xinglan'), parkId: 'park-binjiang', industry: '人工智能', status: '重点', phone: '0571-86001101', areaSqm: 6200, location: 'A1 研发楼东侧' },
+  { id: 'ent-qinghe', name: masterName('ent-qinghe'), parkId: 'park-binjiang', industry: '生物医药', status: '待完善', phone: '0571-86001102', areaSqm: 4200, location: '意向 B2 实验楼 4-5 层' },
+  { id: 'ent-luanshu', name: masterName('ent-luanshu'), parkId: 'park-binjiang', industry: '软件信息', status: '待完善', phone: '0571-86001103', areaSqm: 1200, location: '意向 A1 研发楼 8 层' },
+  { id: 'ent-haiyi', name: masterName('ent-haiyi'), parkId: 'park-lingang', industry: '高端装备', status: '重点', phone: '021-58002101', areaSqm: 18000, location: 'M1 智能厂房北跨' },
+  { id: 'ent-yuanneng', name: masterName('ent-yuanneng'), parkId: 'park-lingang', industry: '新能源', status: '在园', phone: '021-58002102', areaSqm: 9600, location: 'M1 智能厂房南跨' },
+  { id: 'ent-jinfan', name: masterName('ent-jinfan'), parkId: 'park-lingang', industry: '供应链', status: '已迁出', phone: '021-58002103', areaSqm: 0, location: '原 M3 仓储，已退租' },
+  { id: 'ent-qiming', name: masterName('ent-qiming'), parkId: 'park-guanggu', industry: '医疗器械', status: '待完善', phone: '027-87003101', areaSqm: 7200, location: '意向 C1 研发中心低区' },
+  { id: 'ent-baiyu', name: masterName('ent-baiyu'), parkId: 'park-guanggu', industry: '合成生物', status: '待完善', phone: '027-87003102', areaSqm: 5100, location: '意向 C2 中试楼' },
   { id: 'ent-chengxin', name: '澄芯光电科技有限公司', parkId: 'park-binjiang', industry: '集成电路', status: '待完善', phone: '0571-86001409', areaSqm: 3000, location: '意向洁净厂房，楼栋未定' },
 ]
 
 const seedSpaces: SpaceRow[] = [
-  { id: 'sp-a1-8', name: 'A1 研发楼 8 层', parkId: 'park-binjiang', building: 'A1 研发楼', kind: '研发楼', status: '可招商', areaSqm: 1200, tenant: '' },
-  { id: 'sp-a1-east', name: 'A1 东侧扩建', parkId: 'park-binjiang', building: 'A1 研发楼', kind: '厂房', status: '装修中', areaSqm: 8600, tenant: '星澜智造科技有限公司' },
-  { id: 'sp-b2', name: 'B2 实验楼 4-5 层', parkId: 'park-binjiang', building: 'B2 实验楼', kind: '中试楼', status: '可招商', areaSqm: 4200, tenant: '' },
-  { id: 'sp-m1-south', name: 'M1 南跨', parkId: 'park-lingang', building: 'M1 智能厂房', kind: '厂房', status: '在租', areaSqm: 9600, tenant: '远能动力科技有限公司' },
-  { id: 'sp-m1-north', name: 'M1 北跨', parkId: 'park-lingang', building: 'M1 智能厂房', kind: '厂房', status: '在租', areaSqm: 18000, tenant: '海弈装备股份有限公司' },
-  { id: 'sp-m2', name: 'M2 测试舱', parkId: 'park-lingang', building: 'M2 动力站', kind: '厂房', status: '空置', areaSqm: 4500, tenant: '' },
-  { id: 'sp-c1', name: 'C1 低区', parkId: 'park-guanggu', building: 'C1 研发中心', kind: '研发楼', status: '可招商', areaSqm: 7200, tenant: '' },
-  { id: 'sp-c2', name: 'C2 二层', parkId: 'park-guanggu', building: 'C2 中试楼', kind: '中试楼', status: '空置', areaSqm: 5100, tenant: '' },
+  { id: 'sp-a1-8', name: 'A1 研发楼 8 层', parkId: 'park-binjiang', building: buildingName('bld-bj-a1'), kind: '研发楼', status: '可招商', areaSqm: 1200, tenant: '' },
+  { id: 'sp-a1-east', name: 'A1 东侧扩建', parkId: 'park-binjiang', building: buildingName('bld-bj-a1'), kind: '厂房', status: '装修中', areaSqm: 8600, tenant: masterName('ent-xinglan') },
+  { id: 'sp-b2', name: 'B2 实验楼 4-5 层', parkId: 'park-binjiang', building: buildingName('bld-bj-b2'), kind: '中试楼', status: '可招商', areaSqm: 4200, tenant: '' },
+  { id: 'sp-m1-south', name: 'M1 南跨', parkId: 'park-lingang', building: buildingName('bld-lg-m1'), kind: '厂房', status: '在租', areaSqm: 9600, tenant: masterName('ent-yuanneng') },
+  { id: 'sp-m1-north', name: 'M1 北跨', parkId: 'park-lingang', building: buildingName('bld-lg-m1'), kind: '厂房', status: '在租', areaSqm: 18000, tenant: masterName('ent-haiyi') },
+  { id: 'sp-m2', name: 'M2 测试舱', parkId: 'park-lingang', building: buildingName('bld-lg-m2'), kind: '厂房', status: '空置', areaSqm: 4500, tenant: '' },
+  { id: 'sp-c1', name: 'C1 低区', parkId: 'park-guanggu', building: buildingName('bld-gg-c1'), kind: '研发楼', status: '可招商', areaSqm: 7200, tenant: '' },
+  { id: 'sp-c2', name: 'C2 二层', parkId: 'park-guanggu', building: buildingName('bld-gg-c2'), kind: '中试楼', status: '空置', areaSqm: 5100, tenant: '' },
   { id: 'sp-apt', name: '人才公寓 A 栋', parkId: 'park-binjiang', building: '人才公寓', kind: '配套', status: '在租', areaSqm: 8600, tenant: '园区统一配租' },
 ]
 
 const seedPolicies: PolicyRow[] = [
-  { id: 'pol-xinglan', title: '星澜人才公寓配租', policyName: '人才公寓配租办法', parkId: 'park-binjiang', enterpriseName: '星澜智造科技有限公司', status: '审核中', amount: '40 套', owner: '陈启明' },
-  { id: 'pol-haiyi', title: '海弈固定资产投资奖励', policyName: '固定资产投资奖励', parkId: 'park-lingang', enterpriseName: '海弈装备股份有限公司', status: '待兑付', amount: '960 万元', owner: '周岚' },
-  { id: 'pol-yuan', title: '远能设备进场补贴', policyName: '设备进场补贴', parkId: 'park-lingang', enterpriseName: '远能动力科技有限公司', status: '退回', amount: '180 万元', owner: '周岚' },
-  { id: 'pol-qiming', title: '启明装修补贴', policyName: '洁净装修补贴', parkId: 'park-guanggu', enterpriseName: '启明医疗器械有限公司', status: '申报中', amount: '待核定', owner: '刘澄' },
-  { id: 'pol-qinghe', title: '青禾中试平台补助', policyName: '生物医药中试补助', parkId: 'park-binjiang', enterpriseName: '青禾生物医药有限公司', status: '审核中', amount: '220 万元', owner: '苏晚' },
+  { id: 'pol-xinglan', title: '星澜人才公寓配租', policyName: '人才公寓配租办法', parkId: 'park-binjiang', enterpriseName: masterName('ent-xinglan'), status: '审核中', amount: '40 套', owner: '陈启明' },
+  { id: 'pol-haiyi', title: '海弈固定资产投资奖励', policyName: '固定资产投资奖励', parkId: 'park-lingang', enterpriseName: masterName('ent-haiyi'), status: '待兑付', amount: '960 万元', owner: '周岚' },
+  { id: 'pol-yuan', title: '远能设备进场补贴', policyName: '设备进场补贴', parkId: 'park-lingang', enterpriseName: masterName('ent-yuanneng'), status: '退回', amount: '180 万元', owner: '周岚' },
+  { id: 'pol-qiming', title: '启明装修补贴', policyName: '洁净装修补贴', parkId: 'park-guanggu', enterpriseName: masterName('ent-qiming'), status: '申报中', amount: '待核定', owner: '刘澄' },
+  { id: 'pol-qinghe', title: '青禾中试平台补助', policyName: '生物医药中试补助', parkId: 'park-binjiang', enterpriseName: masterName('ent-qinghe'), status: '审核中', amount: '220 万元', owner: '苏晚' },
   { id: 'pol-chengxin', title: '澄芯租金递减', policyName: '租金扶持', parkId: 'park-binjiang', enterpriseName: '澄芯光电科技有限公司', status: '申报中', amount: '首年九折', owner: '陈启明' },
 ]
 
@@ -411,7 +394,7 @@ function mapPolicy(row: Record<string, unknown>): PolicyRow | null {
 }
 
 export function parkById(id: string): ParkNode | undefined {
-  return parks.find((item) => item.id === id)
+  return getById(parks, id)
 }
 
 export function parkShort(id: string): string {

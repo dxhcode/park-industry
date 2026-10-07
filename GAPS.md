@@ -4,7 +4,7 @@
 
 ## 没有后端
 
-- 没有接口、数据库、账号体系和文件服务。登录只校验三个写死的演示账号。
+- 没有接口、数据库、账号体系和文件服务。登录只校验三个写死的演示账号。登录壳用 `@park/components` 的 `LoginPage`，账号仍是 `chenqm`、`zhoulan`、`liucheng`，不用 `@park/mock` 里的 `admin` / `operator`。
 - 会话在 `localStorage` 键 `park-industry.session`。招商签约在 `park-industry.pipeline.v1`。待办、企业、空间、政策、促进、快报和设置在 `park-industry.ops.v1`。
 - 换浏览器、清站点数据，或点「恢复示例」，改动就没了。没有多人同时编辑。
 - 三个演示账号看到同一份数据。角色页只是台账，不会按人收起菜单，也不能让苏晚、何安、江衡登录。

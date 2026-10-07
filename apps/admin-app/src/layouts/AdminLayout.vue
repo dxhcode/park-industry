@@ -5,6 +5,8 @@ import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue'
 import { Modal, message } from 'ant-design-vue'
 import type { MenuProps } from 'ant-design-vue'
 import zhCN from 'ant-design-vue/es/locale/zh_CN'
+import { RouteMotion } from '@park/components'
+import { adminAntdTheme, parkMotion } from '@park/theme'
 import ScreenJump from '@/components/ScreenJump.vue'
 import { adminMenus } from '@/config/menus'
 import { sceneForAdminPath } from '@/nav/screenLink'
@@ -12,7 +14,6 @@ import { useAuthStore } from '@/stores/auth'
 import { useOpsStore } from '@/stores/ops'
 import { usePipelineStore } from '@/stores/pipeline'
 import { useShellStore } from '@/stores/shell'
-import { adminAntdTheme } from '@/theme/antd'
 
 const shell = useShellStore()
 const auth = useAuthStore()
@@ -175,9 +176,9 @@ function resetData() {
         </a-layout-header>
         <a-layout-content class="content">
           <router-view v-slot="{ Component, route: current }">
-            <transition name="page" mode="out-in">
+            <RouteMotion :name="parkMotion.routeFade">
               <component :is="Component" :key="current.path" />
-            </transition>
+            </RouteMotion>
           </router-view>
         </a-layout-content>
       </a-layout>
@@ -402,34 +403,10 @@ function resetData() {
   padding: 20px 24px 32px;
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
-.page-enter-from {
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-.page-leave-to {
-  opacity: 0;
-  transform: translateY(-6px);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .page-enter-active,
-  .page-leave-active,
   .menu-wrap :deep(.ant-menu-item),
   .menu-wrap :deep(.ant-menu-submenu-title) {
     transition: none;
-  }
-
-  .page-enter-from,
-  .page-leave-to {
-    transform: none;
   }
 }
 

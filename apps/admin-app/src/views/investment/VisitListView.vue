@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState, KpiStat } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import KpiStat from '@/components/KpiStat.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
@@ -97,12 +95,13 @@ function openLink(item: Visit) {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 1080 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的拜访' : '还没有拜访'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '登记时至少挂到一个项目或一条线索。'"
-            :primary="filteredOut ? '清空筛选' : '登记拜访'"
-            :secondary="filteredOut ? '登记拜访' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/investment/visits/new')"
+            :primary-text="filteredOut ? '清空筛选' : '登记拜访'"
+            :secondary-text="filteredOut ? '登记拜访' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/investment/visits/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">

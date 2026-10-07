@@ -1,10 +1,8 @@
 <script setup lang="ts">
+import { PageHeader, EmptyState, KpiStat } from '@park/components'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { TableColumnsType } from 'ant-design-vue'
-import EmptyState from '@/components/EmptyState.vue'
-import KpiStat from '@/components/KpiStat.vue'
-import PageHeader from '@/components/PageHeader.vue'
 import ScreenJump from '@/components/ScreenJump.vue'
 import StatusTag from '@/components/StatusTag.vue'
 import { includesKeyword } from '@/mock/helpers'
@@ -84,12 +82,13 @@ function contractLabel(id: string) {
       <a-table :columns="columns" :data-source="rows" :pagination="pagination" row-key="id" :scroll="{ x: 980 }">
         <template #emptyText>
           <EmptyState
+            :variant="filteredOut ? 'search' : 'empty'"
             :title="filteredOut ? '没有符合条件的节点' : '还没有履约节点'"
             :description="filteredOut ? '换一个关键词，或清空筛选后再看。' : '节点挂在合同上，逾期会进驾驶舱告警。'"
-            :primary="filteredOut ? '清空筛选' : '登记节点'"
-            :secondary="filteredOut ? '登记节点' : ''"
-            @primary-click="onEmptyPrimary"
-            @secondary-click="router.push('/signing/performance/new')"
+            :primary-text="filteredOut ? '清空筛选' : '登记节点'"
+            :secondary-text="filteredOut ? '登记节点' : ''"
+            @primary="onEmptyPrimary"
+            @secondary="router.push('/signing/performance/new')"
           />
         </template>
         <template #bodyCell="{ column, record }">
