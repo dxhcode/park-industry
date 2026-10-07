@@ -1,0 +1,32 @@
+:root {
+  --park-navy: #0e1320;
+  --park-gold: #c6a15b;
+  --park-gold-soft: #f3d7a6;
+  --park-teal: #2dd4bf;
+  --park-sky: #38bdf8;
+  color: #e7f3ff;
+  background: #070b12;
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei',
+    sans-serif;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: #070b12;
+}
+
+button,
+input {
+  font-family: inherit;
+}
