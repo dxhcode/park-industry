@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>产业运营平台</title>
+    <script>
+      ;(function () {
+        var base = '/park-industry/'
+        var loc = window.location
+        var path = loc.pathname
+        var apps = ['admin', 'screen']
+        var matched = ''
+        for (var i = 0; i < apps.length; i++) {
+          var prefix = base + apps[i] + '/'
+          if (path.indexOf(prefix) === 0) {
+            matched = apps[i]
+            break
+          }
+        }
+        if (!matched) {
+          loc.replace(base)
+          return
+        }
+        var rest = path.slice((base + matched + '/').length)
+        var query = loc.search ? '&' + loc.search.slice(1).replace(/&/g, '~and~') : ''
+        loc.replace(
+          loc.protocol +
+            '//' +
+            loc.hostname +
+            (loc.port ? ':' + loc.port : '') +
+            base +
+            matched +
+            '/?/' +
+            rest.replace(/&/g, '~and~') +
+            query +
+            loc.hash,
+        )
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>
